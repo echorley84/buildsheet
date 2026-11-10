@@ -1,0 +1,6 @@
+# Keep issue pages fresh in browsers and in Google Translate's copy (5 minutes)
+<IfModule mod_headers.c>
+  <FilesMatch "\.html$">
+    Header set Cache-Control "public, max-age=300"
+  </FilesMatch>
+</IfModule>
