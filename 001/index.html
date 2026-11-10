@@ -98,13 +98,14 @@ section :focus-visible { outline-color: var(--accent); }
   padding-left: max(16px, env(safe-area-inset-left, 0px));
   padding-right: max(16px, env(safe-area-inset-right, 0px));
   padding-block: 12px 0;
-  display: flex; justify-content: flex-end;
+  display: flex; justify-content: flex-end; gap: .5rem;
 }
 .settings-btn {
   width: 44px; height: 44px; border-radius: 50%; border: 0; cursor: pointer;
   background: var(--sheet); color: var(--accent); font: 800 1rem var(--body);
   box-shadow: 0 2px 8px rgba(0,0,0,.18);
 }
+.lang-btn { display: grid; place-items: center; }
 .settings-btn[aria-expanded="true"] { background: var(--accent); color: var(--accent-ink); }
 .settings-panel {
   position: absolute; z-index: 30; top: 62px; right: max(16px, env(safe-area-inset-right, 0px));
@@ -502,26 +503,10 @@ h3, .steps h3, .tagline, .result-card .who { font-size: var(--fs-lg); }
 <a class="skip" href="#main">Skip to the issue</a>
 
 <div class="toolbar">
-  <button type="button" class="settings-btn" id="settings-btn" aria-expanded="false" aria-controls="settings-panel" aria-label="Reading settings: theme, text size and language">Aa</button>
-  <div class="settings-panel" id="settings-panel" role="region" aria-label="Reading settings" hidden>
+  <button type="button" class="settings-btn lang-btn" id="lang-btn" aria-expanded="false" aria-controls="lang-panel" aria-label="Translate this page"><svg viewBox="0 0 24 24" aria-hidden="true" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><path d="M2.5 12h19"/><path d="M12 2.5c2.6 2.6 3.9 5.8 3.9 9.5s-1.3 6.9-3.9 9.5c-2.6-2.6-3.9-5.8-3.9-9.5S9.4 5.1 12 2.5z"/></svg></button>
+  <div class="settings-panel" id="lang-panel" role="region" aria-label="Translate this page" hidden>
   <div class="ctl">
-    <span class="ctl-label" id="lbl-theme">Theme</span>
-    <div class="seg" role="group" aria-labelledby="lbl-theme">
-      <button type="button" data-theme-set="auto" aria-pressed="true">Auto</button>
-      <button type="button" data-theme-set="light" aria-pressed="false">Light</button>
-      <button type="button" data-theme-set="dark" aria-pressed="false">Dark</button>
-    </div>
-  </div>
-  <div class="ctl">
-    <span class="ctl-label" id="lbl-size">Text</span>
-    <div class="seg" role="group" aria-labelledby="lbl-size">
-      <button type="button" data-size="0" aria-pressed="true" aria-label="Normal text">A</button>
-      <button type="button" data-size="1" aria-pressed="false" aria-label="Larger text" style="font-size:1.05rem">A+</button>
-      <button type="button" data-size="2" aria-pressed="false" aria-label="Largest text" style="font-size:1.2rem">A++</button>
-    </div>
-  </div>
-  <div class="ctl" id="lang-ctl">
-    <span class="ctl-label" id="lbl-lang">Language</span>
+    <span class="ctl-label" id="lbl-lang">Read this page in</span>
     <div class="lang-row">
       <select id="lang" aria-labelledby="lbl-lang">
         <option value="pt" lang="pt">Português</option>
@@ -542,6 +527,25 @@ h3, .steps h3, .tagline, .result-card .who { font-size: var(--fs-lg); }
       <button type="button" class="lang-go" id="lang-go">Translate</button>
     </div>
     <p class="lang-note">Opens a translated copy of this page using Google Translate. The examples still work.</p>
+  </div>
+  </div>
+  <button type="button" class="settings-btn" id="settings-btn" aria-expanded="false" aria-controls="settings-panel" aria-label="Reading settings: theme and text size">Aa</button>
+  <div class="settings-panel" id="settings-panel" role="region" aria-label="Reading settings" hidden>
+  <div class="ctl">
+    <span class="ctl-label" id="lbl-theme">Theme</span>
+    <div class="seg" role="group" aria-labelledby="lbl-theme">
+      <button type="button" data-theme-set="auto" aria-pressed="true">Auto</button>
+      <button type="button" data-theme-set="light" aria-pressed="false">Light</button>
+      <button type="button" data-theme-set="dark" aria-pressed="false">Dark</button>
+    </div>
+  </div>
+  <div class="ctl">
+    <span class="ctl-label" id="lbl-size">Text</span>
+    <div class="seg" role="group" aria-labelledby="lbl-size">
+      <button type="button" data-size="0" aria-pressed="true" aria-label="Normal text">A</button>
+      <button type="button" data-size="1" aria-pressed="false" aria-label="Larger text" style="font-size:1.05rem">A+</button>
+      <button type="button" data-size="2" aria-pressed="false" aria-label="Largest text" style="font-size:1.2rem">A++</button>
+    </div>
   </div>
   </div>
 </div>
@@ -953,13 +957,20 @@ $("#quiz-form").addEventListener("submit", (e) => {
 
 
 
-/* Language: opens this page through Google Translate (only on the live site, where Google can reach the page) */
-const langCtl = document.getElementById("lang-ctl");
-const liveHost = /pickandmixstudios\.com$|translate\.goog$/.test(location.hostname);
-if (!liveHost && langCtl) langCtl.hidden = true;
+/* Language: its own globe button and panel. Opens the page through Google Translate (live site only, where Google can reach it) */
+const lBtn = document.getElementById("lang-btn"), lPanel = document.getElementById("lang-panel");
+if (!/pickandmixstudios\.com$|translate\.goog$/.test(location.hostname) && lBtn) lBtn.hidden = true;
+function toggleLang(open) {
+  lPanel.hidden = !open; lBtn.setAttribute("aria-expanded", String(open));
+  if (open) { if (typeof togglePanel === "function" && !sPanel.hidden) togglePanel(false); document.getElementById("lang").focus(); }
+}
+lBtn?.addEventListener("click", () => toggleLang(lPanel.hidden));
+sBtn.addEventListener("click", () => { if (!lPanel.hidden) toggleLang(false); });
+document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !lPanel.hidden) { toggleLang(false); lBtn.focus(); } });
+document.addEventListener("click", (e) => { if (!lPanel.hidden && !lPanel.contains(e.target) && !lBtn.contains(e.target)) toggleLang(false); });
 const langSel = document.getElementById("lang");
 const browserLang = (navigator.language || "").toLowerCase();
-if (langSel) [...langSel.options].forEach((o) => { if (browserLang.startsWith(o.value.toLowerCase().split("-")[0]) && !browserLang.startsWith("en")) langSel.value = o.value; });
+if (langSel && !browserLang.startsWith("en")) [...langSel.options].forEach((o) => { if (browserLang.startsWith(o.value.toLowerCase().split("-")[0])) langSel.value = o.value; });
 document.getElementById("lang-go")?.addEventListener("click", () => {
   const page = location.hostname.endsWith("translate.goog") ? "https://pickandmixstudios.com" + location.pathname + location.hash : location.href;
   location.href = "https://translate.google.com/translate?sl=en&tl=" + encodeURIComponent(langSel.value) + "&u=" + encodeURIComponent(page);
