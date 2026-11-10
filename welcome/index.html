@@ -305,6 +305,70 @@ footer strong { font-weight: 700; font-size: 1.05rem; }
 .poll-result { margin: 0; font-weight: 600; min-height: 1.4em; }
 .signoff { font-weight: 600; }
 
+/* ---------- Visual examples (same family as Issue 001) ---------- */
+.visual { margin: 0; display: flex; flex-direction: column; align-items: center; gap: .55rem; }
+.visual figcaption { font: 600 .875rem var(--body); color: var(--muted); text-align: center; max-width: 36ch; }
+
+/* Phone frame. Screens are "screenshots", so they keep fixed colours in both themes */
+.phone { width: min(250px, 80%); background: #0E1A26; border-radius: 32px; padding: 9px; box-shadow: 0 14px 30px rgba(0,0,0,.25); }
+
+/* Lock screen with the Saturday notification */
+.lock {
+  border-radius: 24px; min-height: 300px; padding: 1.5rem .7rem 1.2rem; display: flex; flex-direction: column; align-items: center;
+  color: #FFFFFF; letter-spacing: 0; word-spacing: 0; text-align: center;
+  background:
+    radial-gradient(circle at 18% 14%, rgba(255,255,255,.22) 0 34px, transparent 35px),
+    radial-gradient(circle at 88% 72%, rgba(255,143,184,.45) 0 60px, transparent 61px),
+    linear-gradient(170deg, #2E7BC4, #1A5592 55%, #4A2A86);
+}
+.lock-day { font: 600 .8rem var(--body); opacity: .92; }
+.lock-time { font: 800 3.3rem/1 var(--body); font-variant-numeric: tabular-nums; margin: .1rem 0 1.2rem; }
+.notif { width: 100%; background: rgba(255,255,255,.9); color: #1B2530; border-radius: 16px; padding: .55rem .6rem; display: grid; grid-template-columns: auto 1fr auto; gap: .5rem; align-items: start; text-align: left; box-shadow: 0 6px 16px rgba(0,0,0,.2); }
+.notif + .notif { margin-top: .45rem; opacity: .75; transform: scale(.96); }
+.notif-icon { width: 2rem; height: 2rem; border-radius: 9px; background: #1C6CA3; color: #FFFFFF; display: grid; place-items: center; font: 900 .72rem 'Poppins', var(--body); }
+.notif-icon.grey { background: #8A97A4; }
+.notif b { display: block; font-size: .78rem; line-height: 1.2; }
+.notif div span { display: block; font-size: .72rem; line-height: 1.25; }
+.notif i { font-style: normal; font-size: .62rem; color: #5B6B7A; white-space: nowrap; }
+
+/* Tickable checklist (themed, it sits on the card) */
+.checklist { width: 100%; border: 2.5px solid var(--accent); border-radius: 18px; overflow: hidden; }
+.cl-head { background: var(--accent); color: var(--accent-ink); padding: .6rem .9rem; display: flex; justify-content: space-between; align-items: center; gap: .6rem; font-weight: 800; }
+.cl-count { font: 700 .8125rem var(--body); background: rgba(255,255,255,.2); border-radius: 999px; padding: .15rem .6rem; white-space: nowrap; }
+.cl-bar { height: 6px; background: var(--code-bg); }
+.cl-bar span { display: block; height: 100%; width: 0; background: var(--pink); }
+@media (prefers-reduced-motion: no-preference) { .cl-bar span { transition: width .3s ease; } }
+.cl-body { padding: .7rem .8rem .9rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(132px, 1fr)); gap: .3rem .9rem; }
+.cl-group { min-width: 0; }
+.cl-group h4 { margin: .2rem 0 .1rem; font: 700 .8125rem var(--body); text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+label.cl-item { flex-direction: row; align-items: center; gap: .5rem; min-height: 44px; font-weight: 600; line-height: 1.2; cursor: pointer; }
+.cl-item input { width: 1.25rem; height: 1.25rem; min-height: 0; padding: 0; margin: 0; flex: none; accent-color: var(--accent); cursor: pointer; }
+.cl-item input:checked + span { text-decoration: line-through; color: var(--muted); }
+.cl-forget { grid-column: 1 / -1; background: var(--code-bg); border-radius: 12px; padding: .45rem .8rem .2rem; margin-top: .3rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(132px, 1fr)); column-gap: .9rem; }
+.cl-forget h4 { grid-column: 1 / -1; }
+.cl-forget h4 { color: var(--pink); }
+.cl-done { margin: 0; padding: 0 .9rem .9rem; font-weight: 800; color: var(--good); }
+
+/* Next-week teaser: live countdown on a phone */
+.screen {
+  border-radius: 24px; overflow: hidden; text-align: center; color: #3A1030; letter-spacing: 0; word-spacing: 0;
+  background:
+    radial-gradient(circle at 15% 12%, #fff 0 3px, transparent 4px),
+    radial-gradient(circle at 82% 20%, #7FD4FF 0 4px, transparent 5px),
+    radial-gradient(circle at 70% 85%, #fff 0 3px, transparent 4px),
+    radial-gradient(circle at 25% 78%, #8BE0A4 0 4px, transparent 5px),
+    radial-gradient(circle at 92% 60%, #FFF3A6 0 3px, transparent 4px),
+    linear-gradient(165deg, #FF8FB8, #FFB36B 62%, #FFE07A);
+  padding: 1.6rem .9rem 1.4rem; display: flex; flex-direction: column; justify-content: center; gap: .55rem; min-height: 300px;
+}
+.cd-kicker { font: 700 .7rem var(--body); text-transform: uppercase; letter-spacing: .12em; opacity: .8; }
+.cd-title { font: 800 1.25rem/1.15 var(--body); }
+.cd-boxes { display: grid; grid-template-columns: repeat(3, 1fr); gap: .35rem; }
+.cd-box { background: rgba(255,255,255,.72); border-radius: 12px; padding: .45rem .1rem .35rem; display: flex; flex-direction: column; }
+.cd-box b { font: 800 1.55rem/1 var(--body); font-variant-numeric: tabular-nums; color: #B0185A; }
+.cd-box span { font: 700 .6rem var(--body); text-transform: uppercase; letter-spacing: .08em; margin-top: .2rem; }
+.party { font: 800 .95rem var(--body); background: #fff; color: #B0185A; border-radius: 999px; padding: .2rem .7rem; align-self: center; transform: rotate(-3deg); }
+
 /* ---------- Type scale: four sizes for all text ----------
    xs .8125rem  labels, tags, captions in caps
    sm .9375rem  buttons, captions, notes, text inside examples
@@ -362,6 +426,15 @@ h3, .steps h3, .tagline, .result-card .who { font-size: var(--fs-lg); }
     <h2 id="hello-h">Hello, and welcome to <mark>Build Sheet</mark></h2>
     <p class="lead">Every Saturday lunchtime you'll get one small, genuinely useful thing you can make with AI. No coding, no jargon, and nothing you need a computer science degree for.</p>
     <p>It works with whichever AI you already use: ChatGPT, Claude, Gemini, Copilot or something else. If a build needs a specific app or a paid plan, we'll say so up front.</p>
+    <figure class="visual">
+      <div class="phone"><div class="lock" role="img" aria-label="A phone lock screen on Saturday at 12:00, showing a new email from Build Sheet: This week, make a countdown page for something you're looking forward to">
+        <span class="lock-day">Saturday</span>
+        <span class="lock-time">12:00</span>
+        <div class="notif"><span class="notif-icon">bs</span><div><b>Build Sheet</b><span>This week: make a countdown page for something you're looking forward to</span></div><i>now</i></div>
+        <div class="notif"><span class="notif-icon grey">✓</span><div><b>Reminders</b><span>Weekly shop</span></div><i>9:00</i></div>
+      </div></div>
+      <figcaption>Every Saturday at lunchtime, one new build lands in your inbox.</figcaption>
+    </figure>
     <p>Build Sheet comes from Pick &amp; Mix Studios. We build game-inspired eLearning for a living, and we believe learning should feel a bit like play. This newsletter is that idea, pointed at AI.</p>
   </section>
 
@@ -382,7 +455,57 @@ h3, .steps h3, .tagline, .result-card .who { font-size: var(--fs-lg); }
     <h2 id="win-h">Try this in <mark>two minutes</mark></h2>
     <p>Open your AI app, paste this in, and change the details to suit your week.</p>
     <figure class="prompt"><div class="prompt-head"><span class="prompt-who"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="12" fill="currentColor"/><path d="M7 8.5h10a1.5 1.5 0 0 1 1.5 1.5v4.5A1.5 1.5 0 0 1 17 16h-5l-3 2.5V16H7a1.5 1.5 0 0 1-1.5-1.5V10A1.5 1.5 0 0 1 7 8.5z" fill="var(--sheet)"/></svg>Your prompt</span><button class="copy" type="button" data-copy="p1" aria-label="Copy this prompt">Copy</button></div><p class="prompt-text" id="p1">Make me a tickable checklist for a weekend camping trip with two kids and a dog. Group it by bag, and add a short &quot;don't forget&quot; list at the end.</p></figure>
-    <p>That's it. You just turned a to-do list in your head into something you can use. Next Saturday we'll build something you can share with a link.</p>
+    <p>Here's the kind of thing you'll get back. Go on, tick a few off.</p>
+    <figure class="visual">
+      <div class="checklist" role="group" aria-labelledby="cl-title">
+        <div class="cl-head"><span id="cl-title">Weekend camping</span><span class="cl-count" id="cl-count" aria-live="polite">0 of 14 packed</span></div>
+        <div class="cl-bar" aria-hidden="true"><span id="cl-bar"></span></div>
+        <div class="cl-body">
+          <div class="cl-group"><h4>Big bag</h4>
+            <label class="cl-item"><input type="checkbox"><span>Tent and pegs</span></label>
+            <label class="cl-item"><input type="checkbox"><span>Sleeping bags</span></label>
+            <label class="cl-item"><input type="checkbox"><span>Camping mats</span></label>
+            <label class="cl-item"><input type="checkbox"><span>Head torches</span></label>
+          </div>
+          <div class="cl-group"><h4>Kitchen box</h4>
+            <label class="cl-item"><input type="checkbox"><span>Stove and gas</span></label>
+            <label class="cl-item"><input type="checkbox"><span>Pans and mugs</span></label>
+            <label class="cl-item"><input type="checkbox"><span>Marshmallows</span></label>
+          </div>
+          <div class="cl-group"><h4>Kids' bag</h4>
+            <label class="cl-item"><input type="checkbox"><span>Spare clothes</span></label>
+            <label class="cl-item"><input type="checkbox"><span>Wellies</span></label>
+            <label class="cl-item"><input type="checkbox"><span>Favourite teddy</span></label>
+          </div>
+          <div class="cl-group"><h4>Dog bag</h4>
+            <label class="cl-item"><input type="checkbox"><span>Lead and poo bags</span></label>
+            <label class="cl-item"><input type="checkbox"><span>Food and bowl</span></label>
+          </div>
+          <div class="cl-group cl-forget"><h4>Don't forget</h4>
+            <label class="cl-item"><input type="checkbox"><span>Phone charger</span></label>
+            <label class="cl-item"><input type="checkbox"><span>Check the weather</span></label>
+          </div>
+        </div>
+        <p class="cl-done" id="cl-done" hidden>All packed. Have a brilliant trip!</p>
+      </div>
+      <figcaption>An example result. Some apps give you real tick boxes. Others give a neat list you can paste into your notes.</figcaption>
+    </figure>
+    <p>That's it. You just turned a to-do list in your head into something you can use.</p>
+  </section>
+
+  <section aria-labelledby="next-h">
+    <p class="label pink">Coming next Saturday</p>
+    <h2 id="next-h">Build a <mark>countdown page</mark></h2>
+    <p>Next week you'll make a page that counts down to something you're looking forward to, then share it with a link so friends and family can watch it tick too.</p>
+    <figure class="visual">
+      <div class="phone"><div class="screen" role="img" aria-label="Example countdown page on a phone: Our summer holiday, with days, hours and minutes counting down">
+        <span class="cd-kicker">Counting down to</span>
+        <span class="cd-title">Our summer holiday</span>
+        <div class="cd-boxes"><div class="cd-box"><b data-cd="d">0</b><span>Days</span></div><div class="cd-box"><b data-cd="h">0</b><span>Hrs</span></div><div class="cd-box"><b data-cd="m">0</b><span>Mins</span></div></div>
+        <span class="party">Beach, here we come!</span>
+      </div></div>
+      <figcaption>A sneak peek. You'll make one like this, for whatever you're counting down to.</figcaption>
+    </figure>
   </section>
 
   <section aria-labelledby="poll-h">
@@ -479,6 +602,27 @@ document.querySelectorAll(".poll-opt").forEach((b) => b.addEventListener("click"
 }));
 
 
+
+/* Camping checklist */
+const clBoxes = [...document.querySelectorAll(".checklist input")];
+function clUpdate() {
+  const n = clBoxes.filter((b) => b.checked).length;
+  $("#cl-count").textContent = `${n} of ${clBoxes.length} packed`;
+  $("#cl-bar").style.width = (n / clBoxes.length * 100) + "%";
+  $("#cl-done").hidden = n !== clBoxes.length;
+}
+clBoxes.forEach((b) => b.addEventListener("change", clUpdate));
+
+/* Countdown teaser: always about 7 months away, ticks every 20 seconds */
+const cdTarget = Date.now() + ((212 * 24 + 5) * 60 + 37) * 60000;
+function cdTick() {
+  const left = Math.max(0, cdTarget - Date.now());
+  const d = Math.floor(left / 864e5), h = Math.floor(left / 36e5) % 24, m = Math.floor(left / 6e4) % 60;
+  document.querySelectorAll('[data-cd="d"]').forEach((e) => (e.textContent = d));
+  document.querySelectorAll('[data-cd="h"]').forEach((e) => (e.textContent = h));
+  document.querySelectorAll('[data-cd="m"]').forEach((e) => (e.textContent = m));
+}
+cdTick(); setInterval(cdTick, 20000);
 </script>
 
 </body>
