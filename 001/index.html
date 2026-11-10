@@ -1,0 +1,904 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Issue 001: build a countdown to anything you are looking forward to, with any AI app.">
+<link rel="canonical" href="https://pickandmixstudios.com/buildsheet/001/">
+<link rel="icon" type="image/png" href="../assets/icon.png">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Build Sheet Issue 1">
+<meta property="og:description" content="Issue 001: build a countdown to anything you are looking forward to, with any AI app.">
+<meta property="og:url" content="https://pickandmixstudios.com/buildsheet/001/">
+<meta property="og:image" content="https://pickandmixstudios.com/buildsheet/assets/share.png">
+<meta name="twitter:card" content="summary_large_image">
+<title>Build Sheet Issue 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Maven+Pro:wght@400;500;600;700;800&family=Poppins:wght@900&display=swap">
+<style>
+/* Layout: Pick & Mix Studios look. Brand-blue page, white rounded cards, sticker-style logotype, candy-coloured section labels. Dark mode follows the Pick & Mix Arcade (Patreon) black. */
+:root {
+  --page-top: #1C6CA3;   /* brand blue, darkened slightly so white text passes AA */
+  --page-bot: #2479B3;
+  --on-page: #FFFFFF;
+  --sheet: #FFFFFF;
+  --ink: #16314D;        /* navy headings and text */
+  --muted: #4A5F75;
+  --accent: #1A64A8;     /* nav / outline-button blue */
+  --accent-ink: #FFFFFF;
+  --pink: #C01F62;       /* candy swirl */
+  --orange: #B4520F;     /* gummy bear, deepened for contrast */
+  --label-ink: #FFFFFF;
+  --rule: #D3E3F0;
+  --code-bg: #EEF5FB;
+  --mark-bg: #FFD6E7;
+  --mark-ink: #16314D;
+  --good: #136B3A;
+  --bad: #A3262A;
+  --outline: #0E1A26;    /* sticker outline */
+  --sticker-edge: #FFFFFF;
+  --shadow: 0 10px 28px rgba(8, 40, 70, .22);
+  --sub-bg: #16314D;
+  --sub-ink: #FFFFFF;
+
+  --display: "Poppins", "Arial Black", system-ui, sans-serif;   /* sticker logotype only */
+  --body: "Maven Pro", "Trebuchet MS", system-ui, sans-serif;      /* matches pickandmixstudios.com */
+  --bubble: #EAF3FA;
+  --bubble-edge: #CFE2F2;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --page-top: #07090C; --page-bot: #0E1620; --on-page: #EAF2FA;
+  --sheet: #161C24; --ink: #EAF2FA; --muted: #A9B9C9;
+  --accent: #6DB8F0; --accent-ink: #07090C;
+  --pink: #FF8DBC; --orange: #FFAA66; --label-ink: #07090C;
+  --rule: #2A3542; --code-bg: #1E2732; --bubble: #1C2734; --bubble-edge: #2F4256;
+  --mark-bg: #F7A8C9; --mark-ink: #07090C;
+  --good: #7BE0A5; --bad: #FFA3A3;
+  --shadow: 0 0 0 1px #232D39; --sticker-edge: #4A94E0; --sub-bg: #4A94E0; --sub-ink: #07090C;
+  color-scheme: dark;
+} }
+:root[data-theme="dark"] {
+  --page-top: #07090C; --page-bot: #0E1620; --on-page: #EAF2FA;
+  --sheet: #161C24; --ink: #EAF2FA; --muted: #A9B9C9;
+  --accent: #6DB8F0; --accent-ink: #07090C;
+  --pink: #FF8DBC; --orange: #FFAA66; --label-ink: #07090C;
+  --rule: #2A3542; --code-bg: #1E2732; --bubble: #1C2734; --bubble-edge: #2F4256;
+  --mark-bg: #F7A8C9; --mark-ink: #07090C;
+  --good: #7BE0A5; --bad: #FFA3A3;
+  --shadow: 0 0 0 1px #232D39; --sticker-edge: #4A94E0; --sub-bg: #4A94E0; --sub-ink: #07090C;
+  color-scheme: dark;
+}
+@media (prefers-contrast: more) { :root:root { --muted: var(--ink); --rule: var(--ink); } }
+
+html { font-size: 100%; }
+html.size-1 { font-size: 112.5%; }
+html.size-2 { font-size: 125%; }
+* { box-sizing: border-box; }
+body {
+  margin: 0; min-height: 100%;
+  background-color: var(--page-top);
+  background-image: linear-gradient(180deg, var(--page-top), var(--page-bot) 70%);
+  background-attachment: fixed;
+  color: var(--ink);
+  font-family: var(--body); font-weight: 500;
+  font-size: 1.0625rem; line-height: 1.4; letter-spacing: -0.012em; word-spacing: -0.05em;
+}
+.skip {
+  position: absolute; left: 12px; top: -100px; z-index: 20;
+  background: var(--sheet); color: var(--accent);
+  padding: .6rem 1rem; border-radius: 999px; font-weight: 700;
+}
+.skip:focus { top: calc(12px + env(safe-area-inset-top, 0px)); }
+:focus-visible { outline: 3px solid var(--on-page); outline-offset: 3px; }
+section :focus-visible { outline-color: var(--accent); }
+
+/* Reading settings: one small button that opens a compact panel */
+.toolbar {
+  position: relative; max-width: 680px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 12px 0;
+  display: flex; justify-content: flex-end;
+}
+.settings-btn {
+  width: 44px; height: 44px; border-radius: 50%; border: 0; cursor: pointer;
+  background: var(--sheet); color: var(--accent); font: 800 1rem var(--body);
+  box-shadow: 0 2px 8px rgba(0,0,0,.18);
+}
+.settings-btn[aria-expanded="true"] { background: var(--accent); color: var(--accent-ink); }
+.settings-panel {
+  position: absolute; z-index: 30; top: 62px; right: max(16px, env(safe-area-inset-right, 0px));
+  background: var(--sheet); color: var(--ink); border-radius: 18px; box-shadow: 0 12px 32px rgba(0,0,0,.28);
+  padding: 1rem; display: flex; flex-direction: column; gap: .8rem; width: min(300px, calc(100vw - 32px));
+}
+.ctl { display: flex; flex-direction: column; gap: .35rem; }
+.ctl-label { font: 700 .75rem var(--body); text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+.seg { display: flex; border-radius: 999px; background: var(--code-bg); padding: 3px; gap: 2px; }
+.seg button {
+  flex: 1; font: 700 .9375rem var(--body); color: var(--ink); background: transparent;
+  border: 0; border-radius: 999px; min-height: 40px; padding: 0 .6rem; cursor: pointer;
+}
+.seg button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); }
+.settings-panel[hidden] { display: none; }
+.settings-panel :focus-visible { outline-color: var(--accent); }
+
+.wrap {
+  max-width: 680px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 12px 64px;
+  display: flex; flex-direction: column; gap: 28px;
+}
+
+/* Masthead */
+.masthead { display: flex; flex-direction: column; align-items: center; text-align: center; gap: .7rem; padding-block: 16px 8px; color: var(--on-page); }
+.presents { display: flex; align-items: center; gap: .6rem; font-weight: 700; font-size: .95rem; margin: 0 0 .6rem; position: relative; z-index: 1; }
+.presents img { width: 52px; height: 52px; border-radius: 50%; display: block; }
+.logo { margin: 0 0 clamp(-1.5rem, -4.4vw, -.9rem); width: 100%; max-width: 560px; }
+.masthead .meta { position: relative; z-index: 1; margin-bottom: .7rem; }
+.logo svg { display: block; width: 100%; height: auto; overflow: visible; }
+.logo text { font-family: var(--display); font-weight: 900; font-size: 84px; letter-spacing: -2px; }
+.l-edge { fill: var(--sticker-edge); stroke: var(--sticker-edge); stroke-width: 26px; stroke-linejoin: round; }
+.l-depth { fill: var(--outline); stroke: var(--outline); stroke-width: 12px; stroke-linejoin: round; }
+.l-face { fill: #FFFFFF; stroke: var(--outline); stroke-width: 12px; stroke-linejoin: round; paint-order: stroke fill; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.meta { font: 700 .8125rem var(--body); letter-spacing: .08em; text-transform: uppercase; margin: 0; padding: .3rem .9rem; border-radius: 999px; background: var(--sheet); color: var(--accent); }
+.tagline { margin: 0; font-size: 1.25rem; max-width: 30ch; font-weight: 600; }
+
+/* Cards */
+section {
+  background: var(--sheet); border-radius: 24px; box-shadow: var(--shadow);
+  padding-block: 1.6rem; padding-inline: clamp(1.1rem, 5vw, 2.1rem);
+  display: flex; flex-direction: column; gap: 1rem;
+}
+.label {
+  align-self: flex-start; margin: 0;
+  font: 700 .8125rem var(--body); letter-spacing: .06em; text-transform: uppercase;
+  color: var(--label-ink); background: var(--accent); padding: .3rem .85rem; border-radius: 999px;
+}
+.label.pink { background: var(--pink); }
+.label.orange { background: var(--orange); }
+h2 { font-family: var(--body); font-weight: 700; letter-spacing: -0.02em; font-size: clamp(1.45rem, 5.4vw, 1.9rem); line-height: 1.15; margin: 0; text-wrap: balance; }
+h3 { font-family: var(--body); font-weight: 700; font-size: 1.15rem; letter-spacing: -0.015em; margin: 0; }
+p { margin: 0; }
+p, li, .prompt-text, .verdict { text-wrap: pretty; }
+/* Sticker label: echoes the outlined, dropped-shadow logo */
+mark {
+  display: inline-block; max-width: 100%;
+  background: #FFFFFF; color: #16314D;
+  border: 2.5px solid var(--outline); border-radius: 10px;
+  box-shadow: 3px 4px 0 var(--outline);
+  padding: .02em .38em .08em; margin: .12em .1em .2em 0;
+  transform: rotate(-2deg);
+  line-height: 1.15;
+}
+h2:has(mark) { line-height: 1.3; }
+.muted { color: var(--muted); }
+.small { font-size: .9375rem; }
+
+/* Steps (a real sequence) */
+.steps { list-style: none; counter-reset: s; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 1.6rem; }
+.steps > li { counter-increment: s; }
+.steps h3 { display: flex; align-items: center; flex-wrap: wrap; gap: .3rem .6rem; font-size: 1.2rem; line-height: 1.2; }
+.steps h3::before {
+  content: "Step " counter(s);
+  font: 800 .75rem var(--body); letter-spacing: .08em; text-transform: uppercase;
+  color: var(--accent); border: 2px solid var(--accent); border-radius: 999px; padding: .2rem .6rem;
+}
+.steps > li > div { min-width: 0; display: flex; flex-direction: column; gap: .65rem; }
+
+/* Prompt cards: styled like a message you'd send */
+.prompt {
+  margin: 0; background: var(--bubble); border: 2px solid var(--bubble-edge);
+  border-radius: 20px 20px 20px 6px; padding: .85rem 1.1rem 1rem;
+  display: flex; flex-direction: column; gap: .55rem;
+}
+.prompt-head { display: flex; align-items: center; justify-content: space-between; gap: .6rem; }
+.prompt-who { min-width: 0; display: flex; align-items: center; gap: .5rem; font-weight: 700; font-size: .8125rem; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); }
+.prompt-who svg { width: 1.6rem; height: 1.6rem; flex: none; }
+.prompt-text { margin: 0; font-weight: 500; font-size: 1rem; line-height: 1.4; color: var(--ink); overflow-wrap: break-word; }
+.copy {
+  font: 700 .875rem var(--body); color: var(--accent); background: var(--sheet);
+  border: 2px solid var(--accent); border-radius: 999px; min-height: 36px; padding: 0 .9rem; cursor: pointer; flex: none; white-space: nowrap;
+  display: inline-flex; align-items: center; gap: .35rem;
+}
+.copy:hover { background: var(--accent); color: var(--accent-ink); }
+.prompt.weak { background: transparent; border-style: dashed; }
+.prompt.weak .prompt-who { color: var(--muted); }
+.btn {
+  align-self: flex-start;
+  font: 700 1rem var(--body); color: var(--accent); background: transparent;
+  border: 3px solid var(--accent); border-radius: 999px; min-height: 46px; padding: 0 1.3rem; cursor: pointer;
+}
+.btn:hover { background: var(--code-bg); }
+.btn.solid { background: var(--accent); color: var(--accent-ink); }
+.btn.solid:hover { filter: brightness(1.08); }
+
+/* Live demo */
+.demo { border: 3px solid var(--accent); border-radius: 20px; overflow: hidden; }
+.demo-label { background: var(--accent); color: var(--accent-ink); font: 700 .9375rem var(--body); padding: .5rem 1rem; margin: 0; }
+.demo-body { padding: 1rem; display: grid; gap: 1rem; }
+.demo-fields { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
+@media (max-width: 480px) { .demo-fields { grid-template-columns: 1fr; } }
+.demo-fields > label { min-width: 0; }
+/* iPhone date fields ignore width:100% unless their native styling is reset */
+input[type="date"] { -webkit-appearance: none; appearance: none; display: block; min-width: 0; max-width: 100%; text-align: left; }
+input[type="date"]::-webkit-date-and-time-value { text-align: left; }
+label { font-weight: 700; font-size: .9375rem; display: flex; flex-direction: column; gap: .3rem; }
+input {
+  font: 600 1rem var(--body); color: var(--ink); background: var(--code-bg);
+  border: 2px solid var(--rule); border-radius: 12px; min-height: 46px; padding: .5rem .8rem; width: 100%;
+}
+.result-card { text-align: center; background: var(--code-bg); border-radius: 16px; padding: 1.25rem 1rem; display: flex; flex-direction: column; gap: .2rem; }
+.result-card .big { font: 800 clamp(2.6rem, 13vw, 3.8rem)/1.05 var(--body); font-variant-numeric: tabular-nums; color: var(--pink); }
+.result-card .who { font-weight: 700; font-size: 1.15rem; }
+
+/* Tabs */
+.tablist { display: flex; gap: .5rem; flex-wrap: wrap; }
+.tab {
+  font: 700 1rem var(--body); color: var(--accent); background: transparent;
+  border: 3px solid var(--accent); border-radius: 999px; min-height: 46px; padding: 0 1.3rem; cursor: pointer;
+}
+.tab[aria-selected="true"] { background: var(--accent); color: var(--accent-ink); }
+.panel { display: flex; flex-direction: column; gap: .75rem; }
+.why { margin: 0; padding-left: 1.1rem; display: flex; flex-direction: column; gap: .3rem; }
+
+/* Quiz */
+.quiz { border: 0; margin: 0; padding: 0; display: flex; flex-direction: column; gap: .6rem; }
+.quiz legend { font-weight: 700; margin-bottom: .4rem; padding: 0; }
+.choice {
+  display: grid; grid-template-columns: auto 1fr; align-items: center; column-gap: .7rem; row-gap: .5rem;
+  font-weight: 600; font-size: 1rem;
+  border: 2px solid var(--rule); border-radius: 14px; padding: .75rem .9rem; min-height: 46px; cursor: pointer;
+}
+.choice input { width: 1.25rem; height: 1.25rem; min-height: 0; accent-color: var(--accent); }
+.quiz:not(.done) .choice:has(input:checked) { border-color: var(--accent); background: var(--code-bg); }
+.verdict { grid-column: 2; display: flex; flex-direction: column; gap: .3rem; font-weight: 500; font-size: .9375rem; color: var(--ink); }
+.badge { align-self: flex-start; font: 700 .75rem var(--body); letter-spacing: .06em; text-transform: uppercase; padding: .15rem .6rem; border-radius: 999px; }
+.choice.is-right { border-color: var(--good); background: color-mix(in srgb, var(--good) 10%, var(--sheet)); }
+.choice.is-right .badge { background: var(--good); color: var(--sheet); }
+.choice.is-wrong { border-color: var(--bad); background: color-mix(in srgb, var(--bad) 8%, var(--sheet)); }
+.choice.is-wrong .badge { background: var(--bad); color: var(--sheet); }
+.choice.is-other { border-style: dashed; background: transparent; }
+.choice.is-other .badge { border: 1.5px solid var(--muted); color: var(--muted); }
+.quiz.done .choice { cursor: default; }
+.quiz-foot { display: flex; align-items: center; flex-wrap: wrap; gap: .5rem 1rem; margin-top: .9rem; }
+.quiz-result { margin: 0; font-weight: 700; }
+.quiz-result.good { color: var(--good); }
+.quiz-result.bad { color: var(--bad); }
+
+/* Subscribe */
+.sub { background: var(--sub-bg); color: var(--sub-ink); align-items: center; text-align: center; }
+.sub .robot { width: 84px; height: 84px; border-radius: 50%; display: block; }
+.sub h2 { color: var(--sub-ink); }
+.sub form { display: flex; flex-wrap: wrap; gap: .6rem; align-items: flex-end; width: 100%; text-align: left; }
+.sub label { flex: 1 1 14rem; color: var(--sub-ink); }
+.sub input { background: #FFFFFF; color: #16314D; border-color: #FFFFFF; }
+.sub .btn { background: var(--pink); color: var(--label-ink); border-color: var(--pink); }
+.sub-cta { align-self: center; display: inline-flex; align-items: center; text-decoration: none; min-height: 52px; padding: 0 2rem; font-size: var(--fs-md); }
+footer { text-align: center; font-size: .875rem; color: var(--on-page); display: flex; flex-direction: column; gap: .2rem; }
+footer strong { font-weight: 700; font-size: 1.05rem; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .btn, .tab, .seg button { transition: background-color .15s, color .15s; }
+  .logo svg { animation: pop .6s cubic-bezier(.3, 1.6, .5, 1) both; }
+  @keyframes pop { from { transform: scale(.92); } to { transform: scale(1); } }
+}
+
+/* App switcher: per-app steps */
+.app-bar {
+  background: var(--sheet); border-radius: 20px; box-shadow: var(--shadow);
+  padding: .8rem 1rem; display: flex; flex-direction: column; gap: .55rem;
+}
+.app-bar-label { margin: 0; font: 700 .8125rem var(--body); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.app-chips { display: flex; flex-wrap: wrap; gap: .4rem; }
+.app-chip {
+  font: 700 .9375rem var(--body); letter-spacing: 0; color: var(--accent); background: transparent;
+  border: 2px solid var(--accent); border-radius: 999px; min-height: 40px; padding: 0 .9rem; cursor: pointer;
+}
+.app-chip[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); }
+/* App tips: same bubble shape as the prompt cards, outlined instead of filled */
+.app-tip {
+  margin: 0; background: var(--sheet); border: 2px solid var(--bubble-edge);
+  border-radius: 20px 20px 20px 6px; padding: .8rem 1.1rem .9rem; font-size: .9688rem;
+}
+.app-tip b {
+  display: flex; align-items: center; gap: .5rem; margin-bottom: .35rem;
+  font: 700 .8125rem var(--body); letter-spacing: .06em; text-transform: uppercase; color: var(--accent);
+}
+.app-tip b::before {
+  content: "i"; flex: none; width: 1.6rem; height: 1.6rem; border-radius: 50%;
+  border: 2px solid var(--accent); display: grid; place-items: center;
+  font: 800 .85rem/1 var(--body); text-transform: none; letter-spacing: 0;
+}
+[data-app][hidden] { display: none !important; }
+
+/* ---------- Visual examples ---------- */
+.visual { margin: 0; display: flex; flex-direction: column; align-items: center; gap: .55rem; }
+.visual figcaption { font: 600 .875rem var(--body); color: var(--muted); text-align: center; max-width: 34ch; }
+.pair { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; }
+.pair > .visual { flex: 1 1 140px; max-width: 200px; }
+
+/* Phone with the finished countdown (a "screenshot", so fixed colours) */
+.phone { width: min(250px, 80%); background: #0E1A26; border-radius: 32px; padding: 9px; box-shadow: 0 14px 30px rgba(0,0,0,.25); }
+.pair .phone { width: 100%; border-radius: 24px; padding: 7px; }
+.screen {
+  border-radius: 24px; overflow: hidden; position: relative; text-align: center; color: #3A1030;
+  background:
+    radial-gradient(circle at 15% 12%, #fff 0 3px, transparent 4px),
+    radial-gradient(circle at 82% 20%, #7FD4FF 0 4px, transparent 5px),
+    radial-gradient(circle at 70% 85%, #fff 0 3px, transparent 4px),
+    radial-gradient(circle at 25% 78%, #8BE0A4 0 4px, transparent 5px),
+    radial-gradient(circle at 92% 60%, #FFF3A6 0 3px, transparent 4px),
+    linear-gradient(165deg, #FF8FB8, #FFB36B 62%, #FFE07A);
+  padding: 1.6rem .9rem 1.4rem; display: flex; flex-direction: column; justify-content: center; gap: .55rem; min-height: 300px;
+  letter-spacing: 0; word-spacing: 0;
+}
+.pair .screen { border-radius: 18px; min-height: 210px; padding: 1rem .5rem; gap: .4rem; }
+.cd-kicker { font: 700 .7rem var(--body); text-transform: uppercase; letter-spacing: .12em; opacity: .8; }
+.cd-title { font: 800 1.25rem/1.15 var(--body); }
+.pair .cd-title { font-size: .95rem; }
+.cd-boxes { display: grid; grid-template-columns: repeat(3, 1fr); gap: .35rem; }
+.cd-box { background: rgba(255,255,255,.72); border-radius: 12px; padding: .45rem .1rem .35rem; display: flex; flex-direction: column; }
+.cd-box b { font: 800 1.55rem/1 var(--body); font-variant-numeric: tabular-nums; color: #B0185A; }
+.cd-box span { font: 700 .6rem var(--body); text-transform: uppercase; letter-spacing: .08em; margin-top: .2rem; }
+.pair .cd-box { border-radius: 8px; padding: .3rem 0; }
+.pair .cd-box b { font-size: 1rem; }
+.pair .cd-box span { font-size: .5rem; }
+.pair .after .cd-box b { font-size: 1.45rem; }
+.party { font: 800 .95rem var(--body); background: #fff; color: #B0185A; border-radius: 999px; padding: .2rem .7rem; align-self: center; transform: rotate(-3deg); }
+.pair .party { font-size: .7rem; }
+
+/* Group chat */
+.chat-mock { width: min(330px, 100%); background: #E6ECF1; border-radius: 22px; padding: .9rem; display: flex; flex-direction: column; gap: .5rem; color: #1B2530; font-size: .9375rem; letter-spacing: 0; word-spacing: 0; }
+.chat-head { font: 700 .8rem var(--body); text-align: center; color: #5B6B7A; }
+.bubble { max-width: 86%; padding: .5rem .75rem; border-radius: 16px 16px 16px 4px; background: #FFFFFF; line-height: 1.3; }
+.bubble.me { align-self: flex-end; background: #D3F1DC; border-radius: 16px 16px 4px 16px; }
+.bubble small { display: block; font-weight: 700; font-size: .75rem; color: #C01F62; }
+.link-card { margin-top: .35rem; border-radius: 10px; overflow: hidden; background: #fff; border: 1px solid #C9D6CF; }
+.link-thumb { height: 64px; background: linear-gradient(165deg, #FF8FB8, #FFB36B 62%, #FFE07A); display: grid; place-items: center; font: 800 1.3rem var(--body); color: #B0185A; }
+.link-meta { padding: .35rem .55rem; font-size: .8rem; }
+.link-meta b { display: block; }
+.link-meta span { color: #5B6B7A; }
+
+/* Result previews (themed, they sit on the card) */
+.result-mock { width: 100%; border: 2px dashed var(--rule); border-radius: 16px; padding: .85rem 1rem; display: flex; flex-direction: column; gap: .55rem; }
+.result-mock h4 { margin: 0; font: 700 .8125rem var(--body); text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+.plain-list { margin: 0; padding-left: 1.1rem; color: var(--muted); }
+.days { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: .45rem; }
+.day { background: var(--code-bg); border-radius: 12px; padding: .5rem .6rem; display: flex; flex-direction: column; gap: .2rem; min-width: 0; }
+.day b { font-size: .75rem; text-transform: uppercase; letter-spacing: .08em; color: var(--accent); }
+.day span { font-weight: 600; font-size: .9375rem; line-height: 1.2; }
+.tags { display: flex; flex-wrap: wrap; gap: .25rem; }
+.tag { font: 700 .6875rem var(--body); padding: .1rem .45rem; border-radius: 999px; background: var(--sheet); border: 1.5px solid var(--rule); color: var(--muted); }
+.tag.veg { border-color: var(--good); color: var(--good); }
+.shop { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: .5rem; }
+.shop div { min-width: 0; }
+.shop b { font-size: .8125rem; color: var(--accent); }
+.shop p { font-size: .875rem; color: var(--ink); }
+
+/* Project diagram */
+.folder { width: 100%; border: 2.5px solid var(--accent); border-radius: 18px; overflow: hidden; }
+.folder-head { background: var(--accent); color: var(--accent-ink); padding: .55rem .9rem; font-weight: 800; display: flex; align-items: center; gap: .5rem; }
+.folder-head svg { width: 1.3rem; height: 1.3rem; flex: none; }
+.folder-body { display: grid; grid-template-columns: 1fr; gap: .9rem; padding: .9rem; }
+@media (min-width: 560px) { .folder-body { grid-template-columns: 1fr auto 1fr; align-items: center; } }
+.folder-col { display: flex; flex-direction: column; gap: .4rem; min-width: 0; }
+.folder-col h4 { margin: 0; font: 700 .75rem var(--body); text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+.chip-file { background: var(--code-bg); border-radius: 10px; padding: .4rem .6rem; font-size: .9375rem; font-weight: 600; display: flex; gap: .45rem; align-items: center; }
+.chip-file i { font-style: normal; font: 800 .6rem var(--body); background: var(--pink); color: var(--label-ink); border-radius: 4px; padding: .1rem .3rem; }
+.chip-chat { border: 2px solid var(--rule); border-radius: 12px 12px 12px 4px; padding: .4rem .6rem; font-size: .9375rem; }
+.flow-arrow { justify-self: center; color: var(--accent); font: 800 1.5rem var(--body); line-height: 1; }
+@media (max-width: 559px) { .flow-arrow { transform: rotate(90deg); } }
+
+/* Wall of text vs chart */
+.ai-chat { width: 100%; background: var(--code-bg); border-radius: 18px; padding: .9rem; display: flex; flex-direction: column; gap: .55rem; }
+.ai-chat .bubble { background: var(--sheet); color: var(--ink); }
+.ai-chat .bubble.me { background: var(--accent); color: var(--accent-ink); }
+.wall { display: flex; flex-direction: column; gap: .35rem; padding-block: .2rem; }
+.wall span { height: .5rem; border-radius: 4px; background: var(--rule); }
+.bars { display: flex; align-items: flex-end; gap: .4rem; height: 120px; padding: .3rem .2rem 0; border-bottom: 2px solid var(--rule); }
+.bars div { flex: 1; background: var(--accent); border-radius: 6px 6px 0 0; position: relative; }
+.bars div:nth-child(5) { background: var(--pink); }
+.bar-labels { display: flex; gap: .4rem; padding: .2rem .2rem 0; }
+.bar-labels span { flex: 1; text-align: center; font: 700 .7rem var(--body); color: var(--muted); }
+.fix-visual { width: 100%; }
+
+/* Dinner picker */
+.picker { width: min(330px, 100%); border-radius: 24px; padding: 1.3rem 1rem; text-align: center; color: #fff; display: flex; flex-direction: column; gap: .7rem;
+  background: linear-gradient(160deg, #2E7BC4, #1A5592); box-shadow: 0 12px 28px rgba(0,0,0,.2); letter-spacing: 0; word-spacing: 0; }
+.picker-q { font: 700 .8rem var(--body); text-transform: uppercase; letter-spacing: .12em; opacity: .85; }
+.picker-out { font: 800 1.6rem/1.15 var(--body); min-height: 2.4em; display: grid; place-items: center; background: rgba(255,255,255,.14); border-radius: 16px; padding: .5rem; }
+.picker-btn { font: 800 1.05rem var(--body); background: #FFD447; color: #2A1F00; border: 0; border-radius: 999px; min-height: 52px; cursor: pointer; box-shadow: 0 4px 0 #C99A00; }
+.picker-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 #C99A00; }
+.picker-btn:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+.picker-list { font-size: .8rem; opacity: .85; }
+
+
+/* Share walkthrough */
+.share-steps { list-style: none; margin: 0; padding: 0; width: 100%; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .8rem; }
+.share-steps li { display: flex; flex-direction: column; gap: .45rem; min-width: 0; }
+.share-cap { display: flex; gap: .4rem; align-items: flex-start; font-size: var(--fs-sm); line-height: 1.3; }
+.share-cap b, .visual figcaption b.num { flex: none; width: 1.4rem; height: 1.4rem; border-radius: 50%; background: var(--accent); color: var(--accent-ink); display: inline-grid; place-items: center; font-size: var(--fs-xs); }
+.visual figcaption b.num { margin-right: .35rem; vertical-align: middle; }
+.win { position: relative; border-radius: 14px; overflow: hidden; background: #FFFFFF; border: 2px solid #CFD9E3; aspect-ratio: 4 / 3.4; color: #1B2530; letter-spacing: 0; word-spacing: 0; }
+.win-bar { display: flex; align-items: center; gap: .3rem; padding: .35rem .45rem; background: #EEF2F6; border-bottom: 1px solid #DCE3EA; font: 700 .625rem var(--body); }
+.win-bar i { width: .4rem; height: .4rem; border-radius: 50%; background: #C5CFD9; flex: none; }
+.win-bar .grow { flex: 1; min-width: 0; color: #5B6B7A; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.fake-btn { font: 700 .625rem var(--body); background: #FFFFFF; border: 1.5px solid #9FB0C0; border-radius: 999px; padding: .12rem .45rem; white-space: nowrap; color: #1B2530; }
+.hot { position: relative; border-color: #C01F62; color: #C01F62; box-shadow: 0 0 0 3px rgba(192,31,98,.25); }
+.win-body { padding: .5rem; display: flex; flex-direction: column; gap: .35rem; height: calc(100% - 1.6rem); }
+.thumb { flex: 1; border-radius: 8px; background: linear-gradient(165deg, #FF8FB8, #FFB36B 62%, #FFE07A); display: grid; place-items: center; font: 800 .95rem var(--body); color: #B0185A; text-align: center; padding: .3rem; }
+.code-lines { flex: 1; border-radius: 8px; background: #1B2530; padding: .45rem; display: flex; flex-direction: column; gap: .3rem; }
+.code-lines span { height: .32rem; border-radius: 3px; background: #4C6A85; }
+.code-lines span:nth-child(2n) { background: #C77DA0; }
+.shade { position: absolute; inset: 1.6rem 0 0; background: rgba(14,26,38,.45); display: flex; align-items: flex-end; }
+.sheet { width: 100%; background: #FFFFFF; border-radius: 12px 12px 0 0; padding: .55rem; display: flex; flex-direction: column; gap: .4rem; }
+.sheet-title { font: 800 .7rem var(--body); }
+.url { font: 600 .6rem var(--body); background: #EEF2F6; border-radius: 6px; padding: .25rem .4rem; color: #5B6B7A; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.sheet .fake-btn { align-self: flex-start; }
+.menu { position: absolute; top: 1.7rem; right: .4rem; width: 62%; background: #FFFFFF; border: 1.5px solid #CFD9E3; border-radius: 10px; padding: .3rem; display: flex; flex-direction: column; gap: .15rem; box-shadow: 0 6px 14px rgba(0,0,0,.18); }
+.menu span { font: 600 .625rem var(--body); padding: .25rem .35rem; border-radius: 6px; }
+.menu span.hot { border: 1.5px solid #C01F62; }
+.drop { flex: 1; border: 2px dashed #9FB0C0; border-radius: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .3rem; font: 700 .6rem var(--body); color: #5B6B7A; text-align: center; }
+.file { display: flex; align-items: center; gap: .25rem; font: 700 .625rem var(--body); color: #1B2530; background: #FFFFFF; border: 1.5px solid #C01F62; border-radius: 6px; padding: .2rem .4rem; box-shadow: 0 4px 8px rgba(0,0,0,.12); transform: rotate(-4deg); }
+.file::before { content: "</>"; font: 800 .55rem var(--body); color: #C01F62; }
+.people { font: 600 .6rem var(--body); background: #EEF2F6; border-radius: 6px; padding: .25rem .4rem; color: #5B6B7A; }
+/* ---------- Type scale: four sizes for all text ----------
+   xs .8125rem  labels, tags, captions in caps
+   sm .9375rem  buttons, captions, notes, text inside examples
+   md 1.0625rem all running text
+   lg 1.25rem   sub-headings and the tagline
+   (h2, the masthead logo and the big countdown numbers are display sizes) */
+:root { --fs-xs: .8125rem; --fs-sm: .9375rem; --fs-md: 1.0625rem; --fs-lg: 1.25rem; }
+body, .prompt-text, .app-tip, .choice, .quiz-result, input, .lead, footer strong { font-size: var(--fs-md); }
+h3, .steps h3, .tagline, .result-card .who { font-size: var(--fs-lg); }
+.small, .verdict, footer, .visual figcaption, .presents, .demo-label, label,
+.btn, .copy, .tab, .app-chip, .seg button, .poll-opt, .settings-btn,
+.chat-mock, .day span, .shop p, .chip-file, .chip-chat, .picker-btn { font-size: var(--fs-sm); }
+.label, .lineup .label, .meta, .ctl-label, .app-bar-label, .prompt-who, .app-tip b, .badge, .steps h3::before,
+.result-mock h4, .folder-col h4, .day b, .shop b, .tag, .chip-file i, .chat-head, .bubble small, .link-meta,
+.bar-labels span, .picker-q, .picker-list { font-size: var(--fs-xs); }
+.promises li::before, .app-tip b::before { font-size: var(--fs-xs); }
+</style>
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to the issue</a>
+
+<div class="toolbar">
+  <button type="button" class="settings-btn" id="settings-btn" aria-expanded="false" aria-controls="settings-panel" aria-label="Reading settings: theme and text size">Aa</button>
+  <div class="settings-panel" id="settings-panel" role="region" aria-label="Reading settings" hidden>
+  <div class="ctl">
+    <span class="ctl-label" id="lbl-theme">Theme</span>
+    <div class="seg" role="group" aria-labelledby="lbl-theme">
+      <button type="button" data-theme-set="auto" aria-pressed="true">Auto</button>
+      <button type="button" data-theme-set="light" aria-pressed="false">Light</button>
+      <button type="button" data-theme-set="dark" aria-pressed="false">Dark</button>
+    </div>
+  </div>
+  <div class="ctl">
+    <span class="ctl-label" id="lbl-size">Text</span>
+    <div class="seg" role="group" aria-labelledby="lbl-size">
+      <button type="button" data-size="0" aria-pressed="true" aria-label="Normal text">A</button>
+      <button type="button" data-size="1" aria-pressed="false" aria-label="Larger text" style="font-size:1.05rem">A+</button>
+      <button type="button" data-size="2" aria-pressed="false" aria-label="Largest text" style="font-size:1.2rem">A++</button>
+    </div>
+  </div>
+  </div>
+</div>
+
+<main class="wrap" id="main" tabindex="-1">
+  <header class="masthead">
+    <p class="presents"><img src="data:image/webp;base64,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" alt="">Pick &amp; Mix Studios presents</p>
+    <h1 class="logo"><span class="sr">Build Sheet</span><svg viewBox="0 36 600 138" aria-hidden="true" focusable="false"><defs><path id="arc" d="M -40 172 Q 300 60 640 172"/><text id="lt" font-size="84" font-weight="900" letter-spacing="-2" style="font-family: Poppins, 'Arial Black', system-ui, sans-serif"><textPath href="#arc" startOffset="50%" text-anchor="middle">build sheet</textPath></text></defs><use href="#lt" class="l-edge" x="0" y="0"/><use href="#lt" class="l-edge" x="0.45" y="1"/><use href="#lt" class="l-edge" x="0.9" y="2"/><use href="#lt" class="l-edge" x="1.35" y="3"/><use href="#lt" class="l-edge" x="1.8" y="4"/><use href="#lt" class="l-edge" x="2.25" y="5"/><use href="#lt" class="l-edge" x="2.7" y="6"/><use href="#lt" class="l-edge" x="3.15" y="7"/><use href="#lt" class="l-edge" x="3.6" y="8"/><use href="#lt" class="l-edge" x="4.05" y="9"/><use href="#lt" class="l-depth" x="0.45" y="1"/><use href="#lt" class="l-depth" x="0.9" y="2"/><use href="#lt" class="l-depth" x="1.35" y="3"/><use href="#lt" class="l-depth" x="1.8" y="4"/><use href="#lt" class="l-depth" x="2.25" y="5"/><use href="#lt" class="l-depth" x="2.7" y="6"/><use href="#lt" class="l-depth" x="3.15" y="7"/><use href="#lt" class="l-depth" x="3.6" y="8"/><use href="#lt" class="l-depth" x="4.05" y="9"/><use href="#lt" class="l-face"/></svg></h1>
+    <p class="meta">Issue 001</p>
+    <p class="tagline">Make genuinely useful things with AI. A new build every Saturday lunchtime, no coding needed, works with ChatGPT, Claude, Gemini and more.</p>
+  </header>
+
+  <div class="app-bar" role="group" aria-labelledby="app-bar-label">
+    <p class="app-bar-label" id="app-bar-label">Show the steps for</p>
+    <div class="app-chips">
+      <button type="button" class="app-chip" data-app-set="any" aria-pressed="true">Any app</button>
+      <button type="button" class="app-chip" data-app-set="chatgpt" aria-pressed="false">ChatGPT</button>
+      <button type="button" class="app-chip" data-app-set="claude" aria-pressed="false">Claude</button>
+      <button type="button" class="app-chip" data-app-set="gemini" aria-pressed="false">Gemini</button>
+      <button type="button" class="app-chip" data-app-set="copilot" aria-pressed="false">Copilot</button>
+    </div>
+  </div>
+
+  <section aria-labelledby="build-h">
+    <p class="label">Build of the week</p>
+    <h2 id="build-h">A countdown page for <mark>anything</mark></h2>
+    <p>Birthdays, holidays, a wedding, the day your new puppy arrives. In three prompts you'll have a page you can share with a link.</p>
+    <figure class="visual">
+      <div class="phone"><div class="screen" role="img" aria-label="Example countdown page on a phone: Mia's 10th birthday, with days, hours and minutes counting down">
+        <span class="cd-kicker">Counting down to</span>
+        <span class="cd-title">Mia's 10th birthday 🎂</span>
+        <div class="cd-boxes"><div class="cd-box"><b data-cd="d">0</b><span>Days</span></div><div class="cd-box"><b data-cd="h">0</b><span>Hours</span></div><div class="cd-box"><b data-cd="m">0</b><span>Mins</span></div></div>
+        <span class="cd-kicker">14 March 2027</span>
+      </div></div>
+      <figcaption>What you'll make: a live countdown that works on any phone.</figcaption>
+    </figure>
+    <ol class="steps">
+      <li><div>
+        <h3>Ask for the page</h3>
+        <figure class="prompt"><div class="prompt-head"><span class="prompt-who"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="12" fill="currentColor"/><path d="M7 8.5h10a1.5 1.5 0 0 1 1.5 1.5v4.5A1.5 1.5 0 0 1 17 16h-5l-3 2.5V16H7a1.5 1.5 0 0 1-1.5-1.5V10A1.5 1.5 0 0 1 7 8.5z" fill="var(--sheet)"/></svg>Your prompt</span><button class="copy" type="button" data-copy="p1" aria-label="Copy this prompt">Copy</button></div><p class="prompt-text" id="p1">Make me a countdown page for my daughter's 10th birthday on 14 March 2027. It should show days, hours and minutes, feel fun and colourful, and work well on a phone.</p></figure>
+        <p class="app-tip" data-app="any"><b>Tip</b>Most AI apps can show the page right in the chat. Look for a canvas, artifact or preview option.</p>
+        <p class="app-tip" data-app="chatgpt" hidden><b>In ChatGPT</b>It writes the page as code in the chat. If you see a Preview option, use it. If not, step 3 shows you how to open it as a real page.</p>
+        <p class="app-tip" data-app="claude" hidden><b>In Claude</b>The finished page appears as an artifact beside the chat, ready to try straight away.</p>
+        <p class="app-tip" data-app="gemini" hidden><b>In Gemini</b>Before you send, tap <strong>Canvas</strong> under the message box. Gemini then builds the page in its Canvas panel, where you can try it.</p>
+        <p class="app-tip" data-app="copilot" hidden><b>In Copilot</b>Use Microsoft 365 Copilot (a work or school account, or a Microsoft 365 Personal or Family plan). Include the word "interactive" and it builds a Page. Switch on <strong>Preview</strong> to try it.</p>
+      </div></li>
+      <li><div>
+        <h3>Make it yours</h3>
+        <p>Ask for one change at a time. Small requests get better results than a long list.</p>
+        <figure class="prompt"><div class="prompt-head"><span class="prompt-who"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="12" fill="currentColor"/><path d="M7 8.5h10a1.5 1.5 0 0 1 1.5 1.5v4.5A1.5 1.5 0 0 1 17 16h-5l-3 2.5V16H7a1.5 1.5 0 0 1-1.5-1.5V10A1.5 1.5 0 0 1 7 8.5z" fill="var(--sheet)"/></svg>Your prompt</span><button class="copy" type="button" data-copy="p2" aria-label="Copy this prompt">Copy</button></div><p class="prompt-text" id="p2">Add a line underneath that says "Party at Grandma's!" and make the numbers bigger.</p></figure>
+        <div class="pair"><figure class="visual"><div class="phone"><div class="screen" aria-hidden="true"><span class="cd-title">Mia's 10th birthday</span><div class="cd-boxes"><div class="cd-box"><b data-cd="d">0</b><span>Days</span></div><div class="cd-box"><b data-cd="h">0</b><span>Hrs</span></div><div class="cd-box"><b data-cd="m">0</b><span>Mins</span></div></div></div></div><figcaption>First version</figcaption></figure><figure class="visual after"><div class="phone"><div class="screen" aria-hidden="true"><span class="cd-title">Mia's 10th birthday</span><div class="cd-boxes"><div class="cd-box"><b data-cd="d">0</b><span>Days</span></div><div class="cd-box"><b data-cd="h">0</b><span>Hrs</span></div><div class="cd-box"><b data-cd="m">0</b><span>Mins</span></div></div><span class="party">Party at Grandma's!</span></div></div><figcaption>After your follow-up</figcaption></figure></div>
+      </div></li>
+      <li><div>
+        <h3>Share it</h3>
+        <p class="app-tip" data-app="any"><b>Tip</b>Use your app's share or publish option to get a link, then drop it in your group chat.</p>
+        <p class="app-tip" data-app="chatgpt" hidden><b>In ChatGPT</b>ChatGPT's share links show the code, not a working page. Copy the code, save it in a file called <strong>countdown.html</strong>, then upload it to a free hosting site such as Netlify Drop or Tiiny Host to get a link anyone can open.</p>
+        <p class="app-tip" data-app="claude" hidden><b>In Claude</b>Use <strong>Publish</strong> or <strong>Share</strong> on the artifact to get a link. Anyone with the link can open your page.</p>
+        <p class="app-tip" data-app="gemini" hidden><b>In Gemini</b>Click <strong>Share &amp; export</strong> at the top of the Canvas panel, then <strong>Share</strong>, and copy the link. It opens in a web browser rather than the Gemini app.</p>
+        <p class="app-tip" data-app="copilot" hidden><b>In Copilot</b>Use <strong>Share</strong> on the Page to invite people. They'll usually need a Microsoft account to open it.</p>
+        <ol class="share-steps" id="share-steps"></ol>
+        <figure class="visual">
+          <div class="chat-mock" role="img" aria-label="Example group chat where the countdown link is shared and a family member replies">
+            <span class="chat-head">Family 🎉</span>
+            <div class="bubble me">Only a few months to go!
+              <div class="link-card"><div class="link-thumb">125 days</div><div class="link-meta"><b>Mia's 10th birthday countdown</b><span>Tap to open</span></div></div>
+            </div>
+            <div class="bubble"><small>Grandma</small>Oh I love this! Cake is on me 🎂</div>
+          </div>
+          <figcaption><b class="num">3</b>Paste the link into your group chat. Done!</figcaption>
+        </figure>
+      </div></li>
+    </ol>
+
+    <div class="demo">
+      <p class="demo-label">Try it: this is roughly what you'll get</p>
+      <div class="demo-body">
+        <div class="demo-fields">
+          <label for="d-name">What are you counting down to?<input id="d-name" value="Mia's 10th birthday"></label>
+          <label for="d-date">Date<input id="d-date" type="date" value="2027-03-14"></label>
+        </div>
+        <div class="result-card" aria-live="polite" aria-atomic="true">
+          <span class="big" id="d-days">0</span>
+          <span id="d-unit">days to go until</span>
+          <span class="who" id="d-who"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="makeover-h">
+    <p class="label pink">Prompt makeover</p>
+    <h2 id="makeover-h">Same request, <mark>much better result</mark></h2>
+    <div class="tablist" role="tablist" aria-label="Compare prompts">
+      <button class="tab" role="tab" id="tab-before" aria-selected="true" aria-controls="panel-before" tabindex="0">Before</button>
+      <button class="tab" role="tab" id="tab-after" aria-selected="false" aria-controls="panel-after" tabindex="-1">After</button>
+    </div>
+    <div class="panel" role="tabpanel" id="panel-before" aria-labelledby="tab-before" tabindex="0">
+      <figure class="prompt weak"><div class="prompt-head"><span class="prompt-who"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="12" fill="currentColor"/><path d="M7 8.5h10a1.5 1.5 0 0 1 1.5 1.5v4.5A1.5 1.5 0 0 1 17 16h-5l-3 2.5V16H7a1.5 1.5 0 0 1-1.5-1.5V10A1.5 1.5 0 0 1 7 8.5z" fill="var(--sheet)"/></svg>Vague prompt</span></div><p class="prompt-text">Write a meal plan.</p></figure>
+      <div class="result-mock">
+        <h4>What you'll probably get back</h4>
+        <ul class="plain-list"><li>Monday: Pasta</li><li>Tuesday: Stir-fry</li><li>Wednesday: Chicken salad</li><li>…and a lot of guessing</li></ul>
+      </div>
+      <p class="muted">The AI has to guess everything: how many people, what you like, your budget, how much time you have. You'll get something generic.</p>
+    </div>
+    <div class="panel" role="tabpanel" id="panel-after" aria-labelledby="tab-after" tabindex="0" hidden>
+      <figure class="prompt"><div class="prompt-head"><span class="prompt-who"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="12" fill="currentColor"/><path d="M7 8.5h10a1.5 1.5 0 0 1 1.5 1.5v4.5A1.5 1.5 0 0 1 17 16h-5l-3 2.5V16H7a1.5 1.5 0 0 1-1.5-1.5V10A1.5 1.5 0 0 1 7 8.5z" fill="var(--sheet)"/></svg>Clear prompt</span><button class="copy" type="button" data-copy="p3" aria-label="Copy this prompt">Copy</button></div><p class="prompt-text" id="p3">Plan 5 weekday dinners for a family of four. Two kids who hate mushrooms, one vegetarian adult. Each meal under 30 minutes. End with one combined shopping list grouped by supermarket aisle.</p></figure>
+      <ul class="why">
+        <li><strong>Who it's for:</strong> four people, with real likes and dislikes.</li>
+        <li><strong>The limits:</strong> weekdays, under 30 minutes.</li>
+        <li><strong>The shape of the answer:</strong> a shopping list you can actually use.</li>
+      </ul>
+      <div class="result-mock">
+        <h4>What you'll get back</h4>
+        <div class="days">
+          <div class="day"><b>Mon</b><span>Veggie fajitas</span><div class="tags"><span class="tag veg">Veggie</span><span class="tag">20 min</span></div></div>
+          <div class="day"><b>Tue</b><span>Pesto pasta bake</span><div class="tags"><span class="tag veg">Veggie</span><span class="tag">25 min</span></div></div>
+          <div class="day"><b>Wed</b><span>Chicken &amp; halloumi wraps</span><div class="tags"><span class="tag">Veggie swap</span><span class="tag">20 min</span></div></div>
+          <div class="day"><b>Thu</b><span>Sweet potato curry</span><div class="tags"><span class="tag veg">Veggie</span><span class="tag">30 min</span></div></div>
+          <div class="day"><b>Fri</b><span>Homemade pizza night</span><div class="tags"><span class="tag">Veggie half</span><span class="tag">25 min</span></div></div>
+        </div>
+        <div class="shop">
+          <div><b>Fruit &amp; veg</b><p>Peppers, sweet potatoes, spinach, onions</p></div>
+          <div><b>Fridge</b><p>Halloumi, chicken, mozzarella, pesto</p></div>
+          <div><b>Cupboard</b><p>Wraps, pasta, coconut milk, pizza bases</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="feature-h">
+    <p class="label orange">Feature in 60 seconds</p>
+    <h2 id="feature-h">Projects: <mark>stop repeating yourself</mark></h2>
+    <p>A project is a folder for related chats. Add files and instructions once, such as your business details or how you like things written, and every new chat in that project starts with them already in mind.</p>
+    <figure class="visual">
+      <div class="folder" role="img" aria-label="Diagram: a project called Side business holds instructions and two files, and every new chat inside it already knows them">
+        <div class="folder-head"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5A1.5 1.5 0 0 1 4.5 5H9l2 2h8.5A1.5 1.5 0 0 1 21 8.5v9A1.5 1.5 0 0 1 19.5 19h-15A1.5 1.5 0 0 1 3 17.5z" fill="currentColor"/></svg>Project: Side business</div>
+        <div class="folder-body">
+          <div class="folder-col"><h4>Add once</h4>
+            <div class="chip-file"><i>NOTE</i>Friendly tone, UK spelling</div>
+            <div class="chip-file"><i>PDF</i>Price list</div>
+            <div class="chip-file"><i>PDF</i>About my shop</div>
+          </div>
+          <span class="flow-arrow" aria-hidden="true">→</span>
+          <div class="folder-col"><h4>Every new chat already knows it</h4>
+            <div class="chip-chat">Write a product description</div>
+            <div class="chip-chat">Reply to a customer</div>
+            <div class="chip-chat">Plan this week's posts</div>
+          </div>
+        </div>
+      </div>
+      <figcaption>Set it up once, and every chat in the project starts with the same background.</figcaption>
+    </figure>
+    <p class="app-tip" data-app="any"><b>Where to find it</b>ChatGPT and Claude both call them <strong>Projects</strong>, and Gemini has its own version called Gems.</p>
+    <p class="app-tip" data-app="chatgpt" hidden><b>In ChatGPT</b>Find <strong>Projects</strong> in the sidebar and create a new one.</p>
+    <p class="app-tip" data-app="claude" hidden><b>In Claude</b>Find <strong>Projects</strong> in the sidebar and create a new one.</p>
+    <p class="app-tip" data-app="gemini" hidden><b>In Gemini</b>The closest match is <strong>Gems</strong>, custom helpers that keep your instructions and files.</p>
+    <p class="app-tip" data-app="copilot" hidden><b>In Copilot</b>Microsoft 365 Copilot has <strong>Notebooks</strong>, which gather your files and notes for related chats.</p>
+    <p><strong>Try it for:</strong> a side business, a house renovation, or planning a big trip.</p>
+    <p class="small muted">Names, features and limits vary by app and plan, so check what yours includes.</p>
+  </section>
+
+  <section aria-labelledby="fix-h">
+    <p class="label">When it goes wrong</p>
+    <h2 id="fix-h">You asked for a chart and got <mark>a wall of text</mark></h2>
+    <figure class="visual">
+      <div class="ai-chat" role="img" aria-label="Example chat: you ask for a sales chart and the AI replies with a long block of text">
+        <div class="bubble me">Show me my monthly sales from January to June</div>
+        <div class="bubble"><div class="wall"><span style="width:96%"></span><span style="width:88%"></span><span style="width:93%"></span><span style="width:79%"></span><span style="width:91%"></span><span style="width:84%"></span><span style="width:60%"></span></div></div>
+      </div>
+      <figcaption>The problem: you wanted a chart, you got paragraphs.</figcaption>
+    </figure>
+    <form id="quiz-form">
+      <fieldset class="quiz">
+        <legend>What's the quickest fix?</legend>
+        <label class="choice" for="q1"><input type="radio" name="q" id="q1" value="0"><span>Start a brand new chat and ask again</span><span class="verdict" hidden><span class="badge"></span><span>It works, but you lose everything you've already explained and start from scratch.</span></span></label>
+        <label class="choice" for="q2"><input type="radio" name="q" id="q2" value="1"><span>Reply: "Show this as a bar chart instead"</span><span class="verdict" hidden><span class="badge"></span><span>The AI remembers the whole chat, so one quick follow-up fixes it.</span></span></label>
+        <label class="choice" for="q3"><input type="radio" name="q" id="q3" value="0"><span>Copy the text into a spreadsheet yourself</span><span class="verdict" hidden><span class="badge"></span><span>Possible, but you're doing the work yourself when the AI can do it in one step.</span></span></label>
+      </fieldset>
+      <div class="quiz-foot">
+        <button class="btn solid" type="submit" id="quiz-btn">Check my answer</button>
+        <p class="quiz-result" id="quiz-feedback" aria-live="polite"></p>
+      </div>
+    </form>
+    <figure class="visual fix-visual" id="fix-visual" hidden>
+      <div class="ai-chat" role="img" aria-label="After the follow-up, the AI shows a bar chart of sales from January to June, with May the highest">
+        <div class="bubble me">Show this as a bar chart instead</div>
+        <div class="bubble" style="max-width:100%;width:100%">
+          <div class="bars"><div style="height:45%"></div><div style="height:52%"></div><div style="height:61%"></div><div style="height:58%"></div><div style="height:92%"></div><div style="height:74%"></div></div>
+          <div class="bar-labels"><span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span></div>
+        </div>
+      </div>
+      <figcaption>One quick follow-up, and there's your chart.</figcaption>
+    </figure>
+  </section>
+
+  <section aria-labelledby="challenge-h">
+    <p class="label pink">Reader challenge</p>
+    <h2 id="challenge-h">Make a page that <mark>picks dinner</mark> for you</h2>
+    <p>Build a page with a big button that picks tonight's dinner from your family's favourites. Reply to this email with a screenshot, and the best ones feature next week.</p>
+    <figure class="visual">
+      <div class="picker">
+        <span class="picker-q">What's for dinner tonight?</span>
+        <div class="picker-out" id="picker-out" aria-live="polite">Tap the button</div>
+        <button type="button" class="picker-btn" id="picker-btn">Pick for me</button>
+        <span class="picker-list">From: fajitas, spag bol, veggie curry, pizza, jacket potatoes, fish finger sandwiches</span>
+      </div>
+      <figcaption>Try it: something like this, with your family's favourites.</figcaption>
+    </figure>
+  </section>
+
+  <section class="sub" aria-labelledby="sub-h">
+    <img class="robot" src="data:image/webp;base64,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" alt="">
+    <h2 id="sub-h">One build. Every Saturday.</h2>
+    <p>Free, friendly and jargon-free. Unsubscribe whenever you like.</p>
+    <a class="btn sub-cta" href="https://buildsheet.beehiiv.com/subscribe" target="_blank" rel="noopener">Subscribe free</a>
+    <p class="small">Opens our sign-up page at buildsheet.beehiiv.com.</p>
+  </section>
+
+  <footer>
+    <strong>Pick &amp; Mix Studios</strong>
+    <span>Build Sheet is an independent newsletter and is not affiliated with any AI company.</span>
+  </footer>
+</main>
+
+<p class="sr" id="announcer" aria-live="polite"></p>
+
+<script>
+const $ = (s) => document.querySelector(s);
+const root = document.documentElement;
+const announce = (t) => { const a = $("#announcer"); a.textContent = ""; setTimeout(() => (a.textContent = t), 30); };
+const store = { get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+                set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} } };
+
+/* Settings panel */
+const sBtn = $("#settings-btn"), sPanel = $("#settings-panel");
+function togglePanel(open) {
+  sPanel.hidden = !open; sBtn.setAttribute("aria-expanded", String(open));
+  if (open) sPanel.querySelector('[aria-pressed="true"]').focus();
+}
+sBtn.addEventListener("click", () => togglePanel(sPanel.hidden));
+document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !sPanel.hidden) { togglePanel(false); sBtn.focus(); } });
+document.addEventListener("click", (e) => { if (!sPanel.hidden && !sPanel.contains(e.target) && e.target !== sBtn) togglePanel(false); });
+
+/* Theme */
+function setTheme(t, save) {
+  if (t === "auto") delete root.dataset.theme; else root.dataset.theme = t;
+  document.querySelectorAll("[data-theme-set]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.themeSet === t)));
+  if (save) { store.set("bs-theme", t); announce(`${t === "auto" ? "Automatic" : t} theme on`); }
+}
+document.querySelectorAll("[data-theme-set]").forEach((b) => b.addEventListener("click", () => setTheme(b.dataset.themeSet, true)));
+const savedTheme = store.get("bs-theme"); if (savedTheme) setTheme(savedTheme, false);
+
+/* Text size */
+function setSize(n, save) {
+  root.classList.remove("size-1", "size-2"); if (n !== "0") root.classList.add("size-" + n);
+  document.querySelectorAll("[data-size]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.size === n)));
+  if (save) { store.set("bs-size", n); announce(["Normal", "Larger", "Largest"][+n] + " text"); }
+}
+document.querySelectorAll("[data-size]").forEach((b) => b.addEventListener("click", () => setSize(b.dataset.size, true)));
+const savedSize = store.get("bs-size"); if (savedSize) setSize(savedSize, false);
+
+/* Share walkthrough, per app */
+const W = {
+  bar: (title, btn, hot) => `<div class="win-bar"><i></i><i></i><span class="grow">${title}</span>${btn ? `<span class="fake-btn${hot ? " hot" : ""}">${btn}</span>` : ""}</div>`,
+  page: (title, btn) => `<div class="win" aria-hidden="true">${W.bar(title, btn, true)}<div class="win-body"><div class="thumb">125 days to go!</div></div></div>`,
+  sheet: (title, btn, title2, extra) => `<div class="win" aria-hidden="true">${W.bar(title, btn, false)}<div class="win-body"><div class="thumb">125 days to go!</div></div><div class="shade"><div class="sheet"><span class="sheet-title">${title2}</span>${extra}</div></div></div>`,
+};
+const SHARE = {
+  any: [
+    ["Tap <strong>Share</strong> or <strong>Publish</strong> on your finished page.", W.page("Countdown page", "Share")],
+    ["Tap <strong>Copy link</strong>.", W.sheet("Countdown page", "Share", "Share this page", '<span class="url">https://…/countdown</span><span class="fake-btn hot">Copy link</span>')],
+  ],
+  claude: [
+    ["Open the artifact and tap <strong>Publish</strong> or <strong>Share</strong>.", W.page("Countdown artifact", "Publish")],
+    ["Copy the link. Anyone with it can open your page.", W.sheet("Countdown artifact", "Publish", "Published", '<span class="url">https://claude.ai/…</span><span class="fake-btn hot">Copy link</span>')],
+  ],
+  gemini: [
+    ["Tap <strong>Share &amp; export</strong> at the top of the Canvas panel.", W.page("Canvas", "Share &amp; export")],
+    ["Choose <strong>Share</strong>, then copy the link.", `<div class="win" aria-hidden="true">${W.bar("Canvas", "Share &amp; export", false)}<div class="win-body"><div class="thumb">125 days to go!</div></div><div class="menu"><span class="hot">Share</span><span>Export</span><span>Copy contents</span></div></div>`],
+  ],
+  copilot: [
+    ["On your Page, tap <strong>Share</strong>.", W.page("Copilot Page", "Share")],
+    ["Add people, or copy a link. They may need a Microsoft account.", W.sheet("Copilot Page", "Share", "Share this Page", '<span class="people">Add names or emails</span><span class="fake-btn hot">Copy link</span>')],
+  ],
+  chatgpt: [
+    ["Tap <strong>Copy</strong> on the code and save it as <strong>countdown.html</strong>.", `<div class="win" aria-hidden="true">${W.bar("Chat", "Copy", true)}<div class="win-body"><div class="code-lines"><span style="width:70%"></span><span style="width:90%"></span><span style="width:55%"></span><span style="width:80%"></span><span style="width:65%"></span><span style="width:85%"></span></div></div></div>`],
+    ["Drop the file onto a free host like Netlify Drop to get your link.", `<div class="win" aria-hidden="true">${W.bar("Free hosting site", "", false)}<div class="win-body"><div class="drop"><span class="file">countdown.html</span>Drop your file here</div></div></div>`],
+  ],
+};
+function renderShare(app) {
+  const list = $("#share-steps"); if (!list) return;
+  list.innerHTML = (SHARE[app] || SHARE.any).map(([cap, vis], i) => `<li>${vis}<p class="share-cap"><b>${i + 1}</b><span>${cap}</span></p></li>`).join("");
+}
+
+/* App switcher: remembers the reader's app; links like #claude open on that app */
+const APPS = ["any", "chatgpt", "claude", "gemini", "copilot"];
+function setApp(app, save) {
+  renderShare(app);
+  document.querySelectorAll("[data-app]").forEach((el) => { el.hidden = el.dataset.app !== app; });
+  document.querySelectorAll("[data-app-set]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.appSet === app)));
+  if (save) { store.set("bs-app", app); announce((app === "any" ? "Steps for any app" : "Steps for " + document.querySelector(`[data-app-set="${app}"]`).textContent) + " shown"); }
+}
+document.querySelectorAll("[data-app-set]").forEach((b) => b.addEventListener("click", () => setApp(b.dataset.appSet, true)));
+const hashApp = location.hash.slice(1).toLowerCase();
+if (APPS.includes(hashApp)) { setApp(hashApp, false); store.set("bs-app", hashApp); }
+else { const savedApp = store.get("bs-app"); setApp(APPS.includes(savedApp) ? savedApp : "any", false); }
+
+/* Countdown phones */
+const cdTarget = new Date("2027-03-14T00:00:00");
+function tickPhones() {
+  let ms = Math.max(0, cdTarget - Date.now());
+  const d = Math.floor(ms / 864e5); ms -= d * 864e5;
+  const h = Math.floor(ms / 36e5); ms -= h * 36e5;
+  const m = Math.floor(ms / 6e4);
+  document.querySelectorAll('[data-cd="d"]').forEach((e) => (e.textContent = d));
+  document.querySelectorAll('[data-cd="h"]').forEach((e) => (e.textContent = h));
+  document.querySelectorAll('[data-cd="m"]').forEach((e) => (e.textContent = String(m).padStart(2, "0")));
+}
+tickPhones(); setInterval(tickPhones, 15000);
+
+/* Dinner picker */
+const dinners = ["Fajitas", "Spag bol", "Veggie curry", "Homemade pizza", "Jacket potatoes", "Fish finger sandwiches"];
+const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+$("#picker-btn").addEventListener("click", () => {
+  const out = $("#picker-out"), btn = $("#picker-btn");
+  const pick = dinners[Math.floor(Math.random() * dinners.length)];
+  if (reduceMotion) { out.textContent = pick + "!"; return; }
+  btn.disabled = true; out.setAttribute("aria-live", "off");
+  let n = 0;
+  const spin = setInterval(() => {
+    out.textContent = dinners[n++ % dinners.length];
+    if (n > 12) { clearInterval(spin); out.setAttribute("aria-live", "polite"); out.textContent = pick + "!"; btn.disabled = false; btn.textContent = "Pick again"; }
+  }, 70);
+});
+
+/* Copy buttons */
+document.querySelectorAll("[data-copy]").forEach((btn) => btn.addEventListener("click", () => {
+  const el = document.getElementById(btn.dataset.copy);
+  const ok = () => { btn.textContent = "Copied ✓"; announce("Prompt copied"); setTimeout(() => (btn.textContent = "Copy"), 2000); };
+  const fallback = () => { const r = document.createRange(); r.selectNodeContents(el); const s = getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent = "Selected"; announce("Prompt selected. Press Control C to copy."); };
+  try { navigator.clipboard.writeText(el.textContent).then(ok, fallback); } catch (e) { fallback(); }
+}));
+
+/* Live demo */
+function updateDemo() {
+  const name = $("#d-name").value.trim() || "your big day";
+  const v = $("#d-date").value;
+  $("#d-who").textContent = name;
+  if (!v) { $("#d-days").textContent = "?"; $("#d-unit").textContent = "pick a date for"; return; }
+  const target = new Date(v + "T00:00:00");
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  const days = Math.round((target - today) / 864e5);
+  if (days > 0) { $("#d-days").textContent = days; $("#d-unit").textContent = days === 1 ? "day to go until" : "days to go until"; }
+  else if (days === 0) { $("#d-days").textContent = "Today!"; $("#d-unit").textContent = "It's finally here:"; }
+  else { $("#d-days").textContent = Math.abs(days); $("#d-unit").textContent = (Math.abs(days) === 1 ? "day" : "days") + " since"; }
+}
+$("#d-name").addEventListener("input", updateDemo);
+$("#d-date").addEventListener("input", updateDemo);
+updateDemo();
+
+/* Tabs */
+const tabs = [...document.querySelectorAll('[role="tab"]')];
+function selectTab(tab, focus) {
+  tabs.forEach((t) => {
+    const on = t === tab;
+    t.setAttribute("aria-selected", String(on));
+    t.tabIndex = on ? 0 : -1;
+    document.getElementById(t.getAttribute("aria-controls")).hidden = !on;
+  });
+  if (focus) tab.focus();
+}
+tabs.forEach((t, i) => {
+  t.addEventListener("click", () => selectTab(t));
+  t.addEventListener("keydown", (e) => {
+    let n = null;
+    if (e.key === "ArrowRight") n = tabs[(i + 1) % tabs.length];
+    if (e.key === "ArrowLeft") n = tabs[(i - 1 + tabs.length) % tabs.length];
+    if (e.key === "Home") n = tabs[0];
+    if (e.key === "End") n = tabs[tabs.length - 1];
+    if (n) { e.preventDefault(); selectTab(n, true); }
+  });
+});
+
+/* Quiz: feedback appears inside each answer */
+let quizDone = false;
+$("#quiz-form").addEventListener("submit", (e) => {
+  e.preventDefault();
+  const fs = $(".quiz"), fb = $("#quiz-feedback"), btn = $("#quiz-btn");
+  const radios = [...document.querySelectorAll('input[name="q"]')];
+  if (quizDone) {
+    quizDone = false; fs.classList.remove("done");
+    radios.forEach((r) => { r.checked = false; r.disabled = false; const c = r.closest(".choice"); c.className = "choice"; c.querySelector(".verdict").hidden = true; });
+    fb.textContent = ""; fb.className = "quiz-result"; btn.textContent = "Check my answer"; $("#fix-visual").hidden = true; radios[0].focus();
+    return;
+  }
+  const picked = radios.find((r) => r.checked);
+  if (!picked) { fb.textContent = "Pick an answer first."; fb.className = "quiz-result bad"; return; }
+  radios.forEach((r) => {
+    const c = r.closest(".choice"), badge = c.querySelector(".badge");
+    const right = r.value === "1";
+    c.classList.add(right ? "is-right" : (r === picked ? "is-wrong" : "is-other"));
+    badge.textContent = right ? (r === picked ? "✓ Your answer · best fix" : "✓ Best fix") : (r === picked ? "✗ Your answer" : "Other option");
+    c.querySelector(".verdict").hidden = false;
+    r.disabled = true;
+  });
+  fs.classList.add("done"); quizDone = true;
+  const won = picked.value === "1";
+  fb.textContent = won ? "✓ You got it! See why each option works or doesn't." : "✗ Not quite. The best fix is marked in green.";
+  fb.className = "quiz-result " + (won ? "good" : "bad");
+  btn.textContent = "Try again";
+  $("#fix-visual").hidden = false;
+});
+
+
+</script>
+
+</body>
+</html>
