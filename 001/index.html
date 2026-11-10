@@ -418,8 +418,22 @@ footer strong { font-weight: 700; font-size: 1.05rem; }
 
 
 /* Share walkthrough */
-.share-steps { list-style: none; margin: 0; padding: 0; width: 100%; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .8rem; }
-.share-steps li { display: flex; flex-direction: column; gap: .45rem; min-width: 0; }
+.share-steps { list-style: none; margin: 0; padding: 0; width: 100%; display: grid; grid-template-columns: 1fr; gap: .7rem; }
+.share-steps li { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: .8rem; align-items: center; border: 2px solid var(--rule); border-radius: 16px; padding: .7rem; min-width: 0; }
+.share-steps .share-cap { order: -1; margin: 0; min-width: 0; }
+.share-cap span { min-width: 0; overflow-wrap: break-word; }
+@media (min-width: 640px) {
+  .share-steps { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .share-steps li { grid-template-columns: 1fr; align-items: start; align-content: start; }
+}
+/* Step 3: the group chat, drawn in the same window style as steps 1 and 2 */
+.chat-body { background: #E6ECF1; justify-content: center; gap: .35rem; overflow: hidden; }
+.mini-bubble { max-width: 90%; background: #FFFFFF; border-radius: 10px 10px 10px 3px; padding: .3rem .45rem; font: 600 .625rem/1.25 var(--body); color: #1B2530; }
+.mini-bubble.me { align-self: flex-end; background: #D3F1DC; border-radius: 10px 10px 3px 10px; padding: .3rem; }
+.mini-bubble small { display: block; color: #C01F62; font-weight: 800; font-size: .6rem; }
+.mini-link { border-radius: 7px; overflow: hidden; background: #FFFFFF; border: 1px solid #C9D6CF; display: flex; flex-direction: column; }
+.mini-link span { background: linear-gradient(165deg, #FF8FB8, #FFB36B 62%, #FFE07A); color: #B0185A; font: 800 .75rem var(--body); text-align: center; padding: .25rem .3rem; }
+.mini-link b { padding: .2rem .35rem; font-size: .6rem; }
 .share-cap { display: flex; gap: .4rem; align-items: flex-start; font-size: var(--fs-sm); line-height: 1.3; }
 .share-cap b, .visual figcaption b.num { flex: none; width: 1.4rem; height: 1.4rem; border-radius: 50%; background: var(--accent); color: var(--accent-ink); display: inline-grid; place-items: center; font-size: var(--fs-xs); }
 .visual figcaption b.num { margin-right: .35rem; vertical-align: middle; }
@@ -527,7 +541,7 @@ h3, .steps h3, .tagline, .result-card .who { font-size: var(--fs-lg); }
         <h3>Ask for the page</h3>
         <figure class="prompt"><div class="prompt-head"><span class="prompt-who"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="12" fill="currentColor"/><path d="M7 8.5h10a1.5 1.5 0 0 1 1.5 1.5v4.5A1.5 1.5 0 0 1 17 16h-5l-3 2.5V16H7a1.5 1.5 0 0 1-1.5-1.5V10A1.5 1.5 0 0 1 7 8.5z" fill="var(--sheet)"/></svg>Your prompt</span><button class="copy" type="button" data-copy="p1" aria-label="Copy this prompt">Copy</button></div><p class="prompt-text" id="p1">Make me a countdown page for my daughter's 10th birthday on 14 March 2027. It should show days, hours and minutes, feel fun and colourful, and work well on a phone.</p></figure>
         <p class="app-tip" data-app="any"><b>Tip</b>Most AI apps can show the page right in the chat. Look for a canvas, artifact or preview option.</p>
-        <p class="app-tip" data-app="chatgpt" hidden><b>In ChatGPT</b>It writes the page as code in the chat. If you see a Preview option, use it. If not, step 3 shows you how to open it as a real page.</p>
+        <p class="app-tip" data-app="chatgpt" hidden><b>In ChatGPT</b>It writes the page as code in the chat. If you see a <strong>Preview</strong> option, use it. If not, step 3 shows you how to open it as a real page.</p>
         <p class="app-tip" data-app="claude" hidden><b>In Claude</b>The finished page appears as an artifact beside the chat, ready to try straight away.</p>
         <p class="app-tip" data-app="gemini" hidden><b>In Gemini</b>Before you send, tap <strong>Canvas</strong> under the message box. Gemini then builds the page in its Canvas panel, where you can try it.</p>
         <p class="app-tip" data-app="copilot" hidden><b>In Copilot</b>Use Microsoft 365 Copilot (a work or school account, or a Microsoft 365 Personal or Family plan). Include the word "interactive" and it builds a Page. Switch on <strong>Preview</strong> to try it.</p>
@@ -546,16 +560,6 @@ h3, .steps h3, .tagline, .result-card .who { font-size: var(--fs-lg); }
         <p class="app-tip" data-app="gemini" hidden><b>In Gemini</b>Click <strong>Share &amp; export</strong> at the top of the Canvas panel, then <strong>Share</strong>, and copy the link. It opens in a web browser rather than the Gemini app.</p>
         <p class="app-tip" data-app="copilot" hidden><b>In Copilot</b>Use <strong>Share</strong> on the Page to invite people. They'll usually need a Microsoft account to open it.</p>
         <ol class="share-steps" id="share-steps"></ol>
-        <figure class="visual">
-          <div class="chat-mock" role="img" aria-label="Example group chat where the countdown link is shared and a family member replies">
-            <span class="chat-head">Family 🎉</span>
-            <div class="bubble me">Only a few months to go!
-              <div class="link-card"><div class="link-thumb">125 days</div><div class="link-meta"><b>Mia's 10th birthday countdown</b><span>Tap to open</span></div></div>
-            </div>
-            <div class="bubble"><small>Grandma</small>Oh I love this! Cake is on me 🎂</div>
-          </div>
-          <figcaption><b class="num">3</b>Paste the link into your group chat. Done!</figcaption>
-        </figure>
       </div></li>
     </ol>
 
@@ -638,7 +642,7 @@ h3, .steps h3, .tagline, .result-card .who { font-size: var(--fs-lg); }
       </div>
       <figcaption>Set it up once, and every chat in the project starts with the same background.</figcaption>
     </figure>
-    <p class="app-tip" data-app="any"><b>Where to find it</b>ChatGPT and Claude both call them <strong>Projects</strong>, and Gemini has its own version called Gems.</p>
+    <p class="app-tip" data-app="any"><b>Where to find it</b>ChatGPT and Claude both call them <strong>Projects</strong>, and Gemini has its own version called <strong>Gems</strong>.</p>
     <p class="app-tip" data-app="chatgpt" hidden><b>In ChatGPT</b>Find <strong>Projects</strong> in the sidebar and create a new one.</p>
     <p class="app-tip" data-app="claude" hidden><b>In Claude</b>Find <strong>Projects</strong> in the sidebar and create a new one.</p>
     <p class="app-tip" data-app="gemini" hidden><b>In Gemini</b>The closest match is <strong>Gems</strong>, custom helpers that keep your instructions and files.</p>
@@ -753,6 +757,7 @@ const W = {
   page: (title, btn) => `<div class="win" aria-hidden="true">${W.bar(title, btn, true)}<div class="win-body"><div class="thumb">125 days to go!</div></div></div>`,
   sheet: (title, btn, title2, extra) => `<div class="win" aria-hidden="true">${W.bar(title, btn, false)}<div class="win-body"><div class="thumb">125 days to go!</div></div><div class="shade"><div class="sheet"><span class="sheet-title">${title2}</span>${extra}</div></div></div>`,
 };
+W.chat = `<div class="win" aria-hidden="true">${W.bar("Family 🎉", "", false)}<div class="win-body chat-body"><div class="mini-bubble me"><div class="mini-link"><span>125 days</span><b>Mia's 10th birthday</b></div></div><div class="mini-bubble"><small>Grandma</small>Love this! 🎂</div></div></div>`;
 const SHARE = {
   any: [
     ["Tap <strong>Share</strong> or <strong>Publish</strong> on your finished page.", W.page("Countdown page", "Share")],
@@ -771,13 +776,14 @@ const SHARE = {
     ["Add people, or copy a link. They may need a Microsoft account.", W.sheet("Copilot Page", "Share", "Share this Page", '<span class="people">Add names or emails</span><span class="fake-btn hot">Copy link</span>')],
   ],
   chatgpt: [
-    ["Tap <strong>Copy</strong> on the code and save it as <strong>countdown.html</strong>.", `<div class="win" aria-hidden="true">${W.bar("Chat", "Copy", true)}<div class="win-body"><div class="code-lines"><span style="width:70%"></span><span style="width:90%"></span><span style="width:55%"></span><span style="width:80%"></span><span style="width:65%"></span><span style="width:85%"></span></div></div></div>`],
+    ["Tap <strong>Copy</strong> on the code and save it as a file.", `<div class="win" aria-hidden="true">${W.bar("Chat", "Copy", true)}<div class="win-body"><div class="code-lines"><span style="width:70%"></span><span style="width:90%"></span><span style="width:55%"></span><span style="width:80%"></span><span style="width:65%"></span><span style="width:85%"></span></div></div></div>`],
     ["Drop the file onto a free host like Netlify Drop to get your link.", `<div class="win" aria-hidden="true">${W.bar("Free hosting site", "", false)}<div class="win-body"><div class="drop"><span class="file">countdown.html</span>Drop your file here</div></div></div>`],
   ],
 };
 function renderShare(app) {
   const list = $("#share-steps"); if (!list) return;
-  list.innerHTML = (SHARE[app] || SHARE.any).map(([cap, vis], i) => `<li>${vis}<p class="share-cap"><b>${i + 1}</b><span>${cap}</span></p></li>`).join("");
+  const steps = [...(SHARE[app] || SHARE.any), ["Paste the link into your group chat. Done!", W.chat]];
+  list.innerHTML = steps.map(([cap, vis], i) => `<li>${vis}<p class="share-cap"><b>${i + 1}</b><span>${cap}</span></p></li>`).join("");
 }
 
 /* App switcher: remembers the reader's app; links like #claude open on that app */
