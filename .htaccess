@@ -4,3 +4,10 @@
     Header set Cache-Control "public, max-age=300"
   </FilesMatch>
 </IfModule>
+
+# Let social posting tools read the share images
+<IfModule mod_headers.c>
+  <FilesMatch "\.(png|jpe?g|webp)$">
+    Header set Access-Control-Allow-Origin "*"
+  </FilesMatch>
+</IfModule>
