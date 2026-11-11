@@ -416,6 +416,9 @@ h3, .steps h3, .tagline, .result-card .who { font-size: var(--fs-lg); }
 .issue { border: 2px solid var(--rule); border-radius: 18px; padding: 1rem 1.1rem; display: grid; grid-template-columns: auto 1fr; gap: .35rem 1rem; align-items: start; }
 .issue-num { grid-row: span 3; width: 3.6rem; height: 3.6rem; border-radius: 16px; background: var(--accent); color: var(--accent-ink); display: grid; place-items: center; font: 900 1.1rem 'Poppins', var(--body); box-shadow: 3px 4px 0 var(--ink); transform: rotate(-3deg); }
 .issue-num.pink { background: var(--pink); }
+.issue-num.navy { background: #22346B; color: #F2C14E; }
+.issue-num.green { background: #1E7A45; color: #FFFFFF; }
+.issue-num.ginger { background: #8B5A2B; color: #FFFFFF; }
 .issue h3 { margin: 0; font-size: var(--fs-lg); line-height: 1.2; }
 .issue p { margin: 0; }
 .issue .when { font: 700 var(--fs-xs) var(--body); text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
@@ -496,6 +499,27 @@ h3, .steps h3, .tagline, .result-card .who { font-size: var(--fs-lg); }
     <h2 id="all-h">Catch up on <mark>every build</mark></h2>
     <p>Every issue lives here with its live examples, so you can try the builds you missed. Newest first.</p>
     <ol class="issues" id="issues" reversed>
+      <li class="issue" data-release="2026-12-05T12:00:00Z">
+        <span class="issue-num ginger" aria-hidden="true">004</span>
+        <p class="when">Issue 004 &middot; 5 December 2026</p>
+        <h3>Plan Christmas dinner backwards</h3>
+        <p>Say when you want to eat and get a timed checklist to tick off in the kitchen.</p>
+        <a class="btn solid read" href="004/">Read Issue 004</a>
+      </li>
+      <li class="issue" data-release="2026-11-28T12:00:00Z">
+        <span class="issue-num green" aria-hidden="true">003</span>
+        <p class="when">Issue 003 &middot; 28 November 2026</p>
+        <h3>Build a family Christmas quiz</h3>
+        <p>Turn your family's in-jokes into a quiz game with two teams, scores and a winner screen.</p>
+        <a class="btn solid read" href="003/">Read Issue 003</a>
+      </li>
+      <li class="issue" data-release="2026-11-21T12:00:00Z">
+        <span class="issue-num navy" aria-hidden="true">002</span>
+        <p class="when">Issue 002 &middot; 21 November 2026</p>
+        <h3>Build a Secret Santa picker</h3>
+        <p>Type in everyone's names and the page draws them in secret, then pass the phone round for the big reveal.</p>
+        <a class="btn solid read" href="002/">Read Issue 002</a>
+      </li>
       <li class="issue" data-release="2026-11-14T12:00:00Z">
         <span class="issue-num pink" aria-hidden="true">001</span>
         <p class="when">Issue 001 &middot; 14 November 2026</p>
