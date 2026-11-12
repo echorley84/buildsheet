@@ -530,13 +530,84 @@ h3, .steps h3, .tagline, .result-card .who { font-size: var(--fs-lg); }
 @keyframes shake { 20% { transform: rotate(-10deg) translateX(-6px); } 40% { transform: rotate(9deg) translateX(6px); } 60% { transform: rotate(-6deg); } 80% { transform: rotate(4deg); } }
 @keyframes swirl { 0% { background-position: 0 0, 11px 7px; } 25% { background-position: 18px -70px, -24px -90px; } 100% { background-position: 0 30px, 11px 52px; } }
 .globe-out { width: 100%; font-size: 1.4rem; }
+/* Pick & Mix Studios menu bar (matches pickandmixstudios.com, menu style 4B) */
+.pm-bar { background: #FFFFFF; border-bottom: 1.5px solid #10324F; box-shadow: 0 3px 0 rgba(16, 50, 79, .25); position: relative; z-index: 20; }
+.pm-bar-in { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; gap: 14px; padding: 8px max(16px, env(safe-area-inset-right, 0px)) 8px max(16px, env(safe-area-inset-left, 0px)); }
+.pm-logo { flex: none; display: block; width: 52px; height: 52px; border-radius: 50%; }
+.pm-logo img { width: 100%; height: 100%; display: block; }
+.pm-nav { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; margin-left: auto; }
+.pm-nav a { color: #1A64A8; font: 700 1rem var(--body); text-decoration: none; padding: 8px 12px; border-radius: 999px; transition: transform .15s, background .15s; }
+.pm-nav a:hover, .pm-nav a:focus-visible { background: #E6F1FB; transform: translateY(-2px) rotate(-2deg); }
+.pm-nav a[aria-current="page"] { background: #1A64A8; color: #FFFFFF; border: 1.5px solid #10324F; box-shadow: 2px 2px 0 #10324F; transform: rotate(-3deg); }
+.pm-nav a:focus-visible { outline: 3px solid #1A64A8; outline-offset: 2px; }
+.pm-menu-btn { display: inline-flex; align-items: center; gap: 6px; margin-left: auto; min-height: 44px; padding: 0 14px; border-radius: 999px; border: 0; cursor: pointer; background: #E6F1FB; color: #1A64A8; font: 700 1rem var(--body); }
+.pm-menu-btn[hidden] { display: none; }
+.pm-bar .toolbar { max-width: none; margin: 0; padding: 0; flex: none; }
+.pm-bar .settings-btn { background: #E6F1FB; color: #1A64A8; box-shadow: none; }
+@media (max-width: 960px) {
+  .pm-bar.has-js .pm-nav { display: none; position: absolute; top: 100%; left: 12px; right: 12px; flex-direction: column; align-items: stretch; gap: 2px;
+    background: #FFFFFF; border: 1.5px solid #10324F; border-radius: 16px; box-shadow: 3px 4px 0 #10324F; padding: 8px; margin-top: 8px; }
+  .pm-bar.has-js .pm-nav.is-open { display: flex; }
+  .pm-bar.has-js .pm-nav a { padding: 10px 14px; }
+  .pm-bar.has-js .pm-nav a[aria-current="page"] { transform: none; }
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .pm-bar, :root:not([data-theme="light"]) .pm-bar .pm-nav { background: #132A42; border-color: #26425F; }
+  :root:not([data-theme="light"]) .pm-nav a { color: #7DC2F4; }
+  :root:not([data-theme="light"]) .pm-nav a:hover, :root:not([data-theme="light"]) .pm-nav a:focus-visible { background: #1A3550; }
+  :root:not([data-theme="light"]) .pm-nav a[aria-current="page"] { background: #2479B3; color: #FFFFFF; border-color: #07131F; }
+  :root:not([data-theme="light"]) .pm-menu-btn, :root:not([data-theme="light"]) .pm-bar .settings-btn { background: #1A3550; color: #7DC2F4; } }
+:root[data-theme="dark"] .pm-bar, :root[data-theme="dark"] .pm-bar .pm-nav { background: #132A42; border-color: #26425F; }
+:root[data-theme="dark"] .pm-nav a { color: #7DC2F4; }
+:root[data-theme="dark"] .pm-nav a:hover, :root[data-theme="dark"] .pm-nav a:focus-visible { background: #1A3550; }
+:root[data-theme="dark"] .pm-nav a[aria-current="page"] { background: #2479B3; color: #FFFFFF; border-color: #07131F; }
+:root[data-theme="dark"] .pm-menu-btn, :root[data-theme="dark"] .pm-bar .settings-btn { background: #1A3550; color: #7DC2F4; }
+@media (prefers-reduced-motion: reduce) { .pm-nav a { transition: none; } }
+
+/* Reading options (Aa panel): easy-read font, wide spacing, animation off, simple page, read aloud */
+.settings-panel { max-height: calc(100vh - 96px); overflow-y: auto; }
+.listen-btn, .reset-btn { font: 700 .9375rem var(--body); border-radius: 999px; min-height: 44px; padding: 0 1rem; cursor: pointer; }
+.listen-btn { background: var(--fill); color: var(--fill-ink); border: 0; }
+.listen-btn[aria-pressed="true"] { background: var(--pink); color: var(--label-ink); }
+.reset-btn { background: transparent; color: var(--accent); border: 2px solid var(--accent); align-self: flex-start; min-height: 40px; }
+html.font-easy { --body: "Atkinson Hyperlegible", Verdana, Tahoma, system-ui, sans-serif; }
+html.space-wide body { line-height: 1.9; letter-spacing: .03em; word-spacing: .12em; }
+html.space-wide section { gap: 1.4rem; }
+html.space-wide p, html.space-wide li { max-width: 62ch; }
+html.motion-off *, html.motion-off *::before, html.motion-off *::after, html.simple *, html.simple *::before, html.simple *::after {
+  animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+:root.simple.simple { --page-top: var(--sheet); --page-bot: var(--sheet); --on-page: var(--ink); --shadow: none; }
+html.simple .presents, html.simple .logo { margin: 0 !important; }
+html.simple .presents img { position: static !important; margin: 0 auto !important; transform: none !important; }
+html.simple body { background: var(--sheet); }
+html.simple section { border-radius: 0; box-shadow: none; padding-inline: 0; border-bottom: 2px solid var(--rule); }
+html.simple .wrap { gap: 8px; }
+html.simple .logo svg { display: none; }
+html.simple .logo .sr { position: static; width: auto; height: auto; overflow: visible; clip: auto; white-space: normal; font: 800 2.25rem var(--body); color: var(--ink); }
+html.simple .presents img { width: 64px; height: 64px; }
+html.simple mark { background: none; color: inherit; box-shadow: none; transform: none; border: 0; padding: 0; text-decoration: underline; text-decoration-thickness: 3px; text-underline-offset: 4px; text-decoration-color: var(--accent); }
+html.simple .masthead .meta { box-shadow: none; }
+html.simple .sub { background: var(--sheet); color: var(--ink); }
+html.simple .sub h2, html.simple .sub label, html.simple .sub-wa { color: var(--ink); }
 </style>
 </head>
 <body>
 
 <a class="skip" href="#main">Skip to the issue</a>
 
-<div class="toolbar">
+<header class="pm-bar">
+  <div class="pm-bar-in">
+    <a class="pm-logo" href="https://pickandmixstudios.com/"><img src="https://pickandmixstudios.com/assets/img/robot-logo.webp" alt="Pick and Mix Studios home" width="512" height="512"></a>
+    <nav class="pm-nav" id="pmNav" aria-label="Pick and Mix Studios">
+      <a href="https://pickandmixstudios.com/">Home</a>
+      <a href="https://pickandmixstudios.com/team-chorley.html">Team Chorley</a>
+      <a href="https://pickandmixstudios.com/showcase.html">Showcase</a>
+      <a href="https://pickandmixstudios.com/tutorials.html">Free Tutorials</a>
+      <a href="https://pickandmixstudios.com/popup-shop.html">Pop-up Shop</a>
+      <a href="https://pickandmixstudios.com/tinybytes/" aria-current="page">Tiny Bytes</a>
+      <a href="https://pickandmixstudios.com/contact.html">Get in Touch</a>
+    </nav>
+    <button type="button" class="pm-menu-btn" id="pmMenuBtn" aria-expanded="false" aria-controls="pmNav" hidden><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg><span>Menu</span></button>
+    <div class="toolbar">
   <button type="button" class="settings-btn lang-btn" id="lang-btn" aria-expanded="false" aria-controls="lang-panel" aria-label="Translate this page"><svg viewBox="0 0 24 24" aria-hidden="true" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><path d="M2.5 12h19"/><path d="M12 2.5c2.6 2.6 3.9 5.8 3.9 9.5s-1.3 6.9-3.9 9.5c-2.6-2.6-3.9-5.8-3.9-9.5S9.4 5.1 12 2.5z"/></svg></button>
   <div class="settings-panel notranslate" translate="no" id="lang-panel" role="region" aria-label="Translate this page" hidden>
   <div class="ctl">
@@ -565,7 +636,7 @@ h3, .steps h3, .tagline, .result-card .who { font-size: var(--fs-lg); }
     <p class="lang-note">Opens a translated copy of this page using Google Translate. The examples still work.</p>
   </div>
   </div>
-  <button type="button" class="settings-btn" id="settings-btn" aria-expanded="false" aria-controls="settings-panel" aria-label="Reading settings: theme and text size">Aa</button>
+  <button type="button" class="settings-btn" id="settings-btn" aria-expanded="false" aria-controls="settings-panel" aria-label="Reading settings">Aa</button>
   <div class="settings-panel" id="settings-panel" role="region" aria-label="Reading settings" hidden>
   <div class="ctl">
     <span class="ctl-label" id="lbl-theme">Theme</span>
@@ -583,8 +654,43 @@ h3, .steps h3, .tagline, .result-card .who { font-size: var(--fs-lg); }
       <button type="button" data-size="2" aria-pressed="false" aria-label="Largest text" style="font-size:1.2rem">A++</button>
     </div>
   </div>
+  <div class="ctl">
+    <span class="ctl-label" id="lbl-font">Font</span>
+    <div class="seg" role="group" aria-labelledby="lbl-font">
+      <button type="button" data-pref="font" data-val="std" aria-pressed="true">Standard</button>
+      <button type="button" data-pref="font" data-val="easy" aria-pressed="false">Easy-read</button>
+    </div>
+  </div>
+  <div class="ctl">
+    <span class="ctl-label" id="lbl-space">Spacing</span>
+    <div class="seg" role="group" aria-labelledby="lbl-space">
+      <button type="button" data-pref="space" data-val="normal" aria-pressed="true">Normal</button>
+      <button type="button" data-pref="space" data-val="wide" aria-pressed="false">Wide</button>
+    </div>
+  </div>
+  <div class="ctl">
+    <span class="ctl-label" id="lbl-motion">Animation</span>
+    <div class="seg" role="group" aria-labelledby="lbl-motion">
+      <button type="button" data-pref="motion" data-val="on" aria-pressed="true">On</button>
+      <button type="button" data-pref="motion" data-val="off" aria-pressed="false">Off</button>
+    </div>
+  </div>
+  <div class="ctl">
+    <span class="ctl-label" id="lbl-simple">Simple page</span>
+    <div class="seg" role="group" aria-labelledby="lbl-simple">
+      <button type="button" data-pref="simple" data-val="off" aria-pressed="true">Off</button>
+      <button type="button" data-pref="simple" data-val="on" aria-pressed="false">On</button>
+    </div>
+  </div>
+  <div class="ctl" id="ctl-listen" hidden>
+    <span class="ctl-label" id="lbl-listen">Read aloud</span>
+    <button type="button" class="listen-btn" id="listen-btn" aria-pressed="false"><span aria-hidden="true">&#9654;</span> Listen to this page</button>
+  </div>
+  <button type="button" class="reset-btn" id="prefs-reset">Reset all</button>
   </div>
 </div>
+  </div>
+</header>
 
 <main class="wrap" id="main" tabindex="-1">
   <header class="masthead">
@@ -844,6 +950,53 @@ function setSize(n, save) {
 document.querySelectorAll("[data-size]").forEach((b) => b.addEventListener("click", () => setSize(b.dataset.size, true)));
 const savedSize = store.get("bs-size"); if (savedSize) setSize(savedSize, false);
 
+/* Reading options */
+const PREFS = { font: ["std", "font-easy"], space: ["normal", "space-wide"], motion: ["on", "motion-off"], simple: ["off", "simple"] };
+const PREF_NAMES = { font: { std: "Standard font", easy: "Easy-read font" }, space: { normal: "Normal spacing", wide: "Wide spacing" },
+  motion: { on: "Animation on", off: "Animation off" }, simple: { off: "Simple page off", on: "Simple page on" } };
+function loadEasyFont() {
+  if (document.getElementById("easy-font")) return;
+  const l = document.createElement("link"); l.id = "easy-font"; l.rel = "stylesheet";
+  l.href = "https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap";
+  document.head.appendChild(l);
+}
+function setPref(k, v, save) {
+  const [def, cls] = PREFS[k];
+  root.classList.toggle(cls, v !== def);
+  if (k === "font" && v === "easy") loadEasyFont();
+  document.querySelectorAll(`[data-pref="${k}"]`).forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.val === v)));
+  if (save) { store.set("bs-" + k, v); announce(PREF_NAMES[k][v]); }
+}
+document.querySelectorAll("[data-pref]").forEach((b) => b.addEventListener("click", () => setPref(b.dataset.pref, b.dataset.val, true)));
+Object.keys(PREFS).forEach((k) => { const v = store.get("bs-" + k); if (v) setPref(k, v, false); });
+
+/* Read aloud, using the device's own voice */
+const listenCtl = $("#ctl-listen"), listenBtn = $("#listen-btn");
+if (listenCtl && "speechSynthesis" in window) {
+  listenCtl.hidden = false;
+  const label = listenBtn.innerHTML;
+  const stop = () => { speechSynthesis.cancel(); listenBtn.setAttribute("aria-pressed", "false"); listenBtn.innerHTML = label; };
+  listenBtn.addEventListener("click", () => {
+    if (listenBtn.getAttribute("aria-pressed") === "true") { stop(); return; }
+    const main = document.getElementById("main"); if (!main) return;
+    const parts = main.innerText.split(/\n+/).map((t) => t.trim()).filter((t) => t && !/^(Copy|Copied!?)$/.test(t));
+    speechSynthesis.cancel();
+    parts.forEach((t, i) => {
+      const u = new SpeechSynthesisUtterance(t); u.lang = document.documentElement.lang || "en-GB"; u.rate = 0.95;
+      if (i === parts.length - 1) u.onend = stop;
+      speechSynthesis.speak(u);
+    });
+    listenBtn.setAttribute("aria-pressed", "true"); listenBtn.innerHTML = '<span aria-hidden="true">&#9632;</span> Stop reading';
+  });
+  window.addEventListener("pagehide", stop);
+}
+const resetBtn = $("#prefs-reset");
+if (resetBtn) resetBtn.addEventListener("click", () => {
+  setTheme("auto", false); setSize("0", false); Object.keys(PREFS).forEach((k) => setPref(k, PREFS[k][0], false));
+  ["bs-theme", "bs-size", "bs-font", "bs-space", "bs-motion", "bs-simple"].forEach((k) => { try { localStorage.removeItem(k); } catch (e) {} });
+  announce("Reading settings reset");
+});
+
 /* Share walkthrough, per app */
 const W = {
   bar: (title, btn, hot) => `<div class="win-bar"><i></i><i></i><span class="grow">${title}</span>${btn ? `<span class="fake-btn${hot ? " hot" : ""}">${btn}</span>` : ""}</div>`,
@@ -1035,5 +1188,19 @@ document.getElementById("lang-go")?.addEventListener("click", () => {
 });
 </script>
 
+<script>
+// Pick & Mix menu bar: on narrow screens the links fold into a Menu button
+(function () {
+  var bar = document.querySelector('.pm-bar'), btn = document.getElementById('pmMenuBtn'), nav = document.getElementById('pmNav');
+  if (!bar || !btn || !nav) return;
+  var mq = window.matchMedia('(max-width: 960px)');
+  bar.classList.add('has-js');
+  function sync() { btn.hidden = !mq.matches; if (!mq.matches) { nav.classList.remove('is-open'); btn.setAttribute('aria-expanded', 'false'); } }
+  sync(); (mq.addEventListener ? mq.addEventListener('change', sync) : mq.addListener(sync));
+  btn.addEventListener('click', function () { var o = nav.classList.toggle('is-open'); btn.setAttribute('aria-expanded', String(o)); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && nav.classList.contains('is-open')) { nav.classList.remove('is-open'); btn.setAttribute('aria-expanded', 'false'); btn.focus(); } });
+  document.addEventListener('click', function (e) { if (nav.classList.contains('is-open') && !bar.contains(e.target)) { nav.classList.remove('is-open'); btn.setAttribute('aria-expanded', 'false'); } });
+})();
+</script>
 </body>
 </html>
