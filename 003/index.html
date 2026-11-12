@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
+<script>try{var t=localStorage.getItem("bs-theme"),r=document.documentElement;if(!t)r.dataset.theme="light";else if(t!=="auto")r.dataset.theme=t;var s=localStorage.getItem("bs-size");if(s&&s!=="0")r.classList.add("size-"+s);[["bs-font","easy","font-easy"],["bs-space","wide","space-wide"],["bs-motion","off","motion-off"],["bs-simple","on","simple"]].forEach(function(p){if(localStorage.getItem(p[0])===p[1])r.classList.add(p[2])})}catch(e){document.documentElement.dataset.theme="light"}</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="Issue 003: turn your family's in-jokes into a Christmas quiz with two teams, scores and a winner, using any AI app.">
@@ -1006,7 +1007,7 @@ function setTheme(t, save) {
   if (save) { store.set("bs-theme", t); announce(`${t === "auto" ? "Automatic" : t} theme on`); }
 }
 document.querySelectorAll("[data-theme-set]").forEach((b) => b.addEventListener("click", () => setTheme(b.dataset.themeSet, true)));
-const savedTheme = store.get("bs-theme"); if (savedTheme) setTheme(savedTheme, false);
+const savedTheme = store.get("bs-theme"); setTheme(savedTheme || "light", false); /* light on a first visit */
 
 /* Text size */
 function setSize(n, save) {
